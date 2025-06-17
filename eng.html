@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Simplified</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Search page */
+        .search-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 25px;
+            font-size: 24px;
+            border: 3px solid #ddd;
+            border-radius: 50px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #ff0000;
+        }
+
+        .search-button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            min-width: 200px;
+        }
+
+        .search-button:hover {
+            background-color: #cc0000;
+        }
+
+        /* Results page */
+        .results-page {
+            display: none;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .back-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #218838;
+        }
+
+        .current-search {
+            font-size: 24px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .video-channel {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .video-views {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* Video page */
+        .video-page {
+            display: none;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .video-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .video-player-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-player {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+
+        .video-details {
+            padding: 30px;
+            background: white;
+            margin-top: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .video-title-large {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .video-meta {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            font-size: 24px;
+            color: #666;
+        }
+
+        /* Visible focus for keyboard navigation */
+        .search-input:focus,
+        .search-button:focus,
+        .back-button:focus,
+        .video-card:focus {
+            outline: 4px solid #0066cc;
+            outline-offset: 2px;
+        }
+
+        /* Improve contrasts for AAA */
+        .search-button:focus,
+        .back-button:focus {
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.3);
+        }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Status announcement styles */
+        .status-announcement {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            padding: 15px;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .search-input {
+                font-size: 20px;
+                padding: 18px 20px;
+            }
+
+            .search-button {
+                font-size: 20px;
+                padding: 18px 35px;
+            }
+
+            .logo {
+                font-size: 36px;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .video-player {
+                height: 250px;
+            }
+        }
+        /* Color consistency fix - all brand red */
+
+        /* Standard button for all "New Search" actions */
+        .back-button.new-search {
+            background-color: #ff0000 !important; /* Brand red like search button */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button.new-search:hover {
+            background-color: #cc0000 !important; /* Same hover as search button */
+        }
+
+        /* Button for "Back to results" - can stay green to differentiate */
+        .back-button.results {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .back-button.results:hover {
+            background-color: #218838;
+        }
+
+        /* CSS for simple examples */
+        .search-examples {
+            max-width: 600px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .examples-intro {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .examples-text {
+            font-size: 16px;
+            color: #888;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .examples-intro {
+                font-size: 16px;
+            }
+            
+            .examples-text {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main search page -->
+    <main class="search-page" id="searchPage">
+        <header>
+            <h1 class="logo">Simple YouTube</h1>
+            <p class="sr-only">Simplified interface for searching and watching YouTube videos</p>
+            
+        </header>
+
+        <!-- Simple examples section to add after the logo -->
+        <section class="search-examples">
+            <p class="examples-intro">Search examples:</p>
+            <div class="examples-text">
+                piano concert • grandma's recipe
+            </div>
+        </section>
+
+        <section class="search-container">
+            <label for="searchInput" class="sr-only">Search videos on YouTube</label>
+            <input type="text" 
+                   class="search-input" 
+                   id="searchInput" 
+                   placeholder="Search videos..." 
+                   autocomplete="off"
+                   aria-describedby="search-help">
+            <div id="search-help" class="sr-only">Enter words to search for videos and press Enter or click Search Videos</div>
+            <div style="text-align: center;">
+                <button class="search-button" 
+                        onclick="searchVideos()" 
+                        aria-describedby="search-button-help">
+                    Search Videos
+                </button>
+                <div id="search-button-help" class="sr-only">Start searching for videos with the entered words</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading with aria-live for screen readers -->
+    <div class="loading" id="loading" aria-live="polite" role="status">
+        <div class="status-announcement">Searching for videos...</div>
+        <div class="sr-only">Search in progress, please wait</div>
+    </div>
+
+    <!-- Results page -->
+    <main class="results-page" id="resultsPage" role="main">
+        <header class="header">
+            <button class="back-button new-search" 
+                    onclick="showSearchPage()" 
+                    aria-label="Return to search page to search for other videos">
+                ← New Search
+            </button>
+            <h1 class="current-search" id="currentSearch"></h1>
+        </header>
+        <section aria-live="polite" aria-label="Search results">
+            <div class="video-grid" id="videoGrid" role="list"></div>
+        </section>
+    </main>
+
+    <!-- Video page -->
+    <main class="video-page" id="videoPage" role="main">
+        <header class="video-header">
+            <button class="back-button results" 
+                    onclick="showResultsPage()" 
+                    aria-label="Return to search results">
+                ← Back to Results
+            </button>
+            <button class="back-button new-search" 
+                    onclick="showSearchPage()" 
+                    style="background-color: #17a2b8;"
+                    aria-label="Return to main page for a new search">
+                ← New Search
+            </button>
+        </header>
+        <section class="video-player-container" aria-label="Video player">
+            <iframe class="video-player" 
+                    id="videoPlayer" 
+                    src="" 
+                    allowfullscreen
+                    title="Selected YouTube video"
+                    aria-describedby="video-description"></iframe>
+        </section>
+        <section class="video-details" aria-labelledby="video-title">
+            <h1 class="video-title-large" id="videoTitle"></h1>
+            <div class="video-meta" id="videoChannel" aria-label="Channel name"></div>
+            <div class="video-meta" id="videoViews" aria-label="Publication date"></div>
+            <div id="video-description" class="sr-only">Details of the video currently playing</div>
+        </section>
+    </main>
+    <script src="config.js"></script>
+    <script>
+        const YOUTUBE_API_KEY = CONFIG.YOUTUBE_API_KEY;
+        const YOUTUBE_API_URL = CONFIG.YOUTUBE_API_URL;
+
+        let currentQuery = '';
+        let currentResults = [];
+
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffTime = Math.abs(now - date);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) return '1 day ago';
+                if (diffDays < 30) return `${diffDays} days ago`;
+                if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
+                return `${Math.floor(diffDays / 365)} years ago`;
+            } catch (e) {
+                return 'Date not available';
+            }
+        }
+
+        // Event listener for Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchVideos();
+            }
+        });
+
+        function searchVideos() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            // Check that the API key is configured
+            if (YOUTUBE_API_KEY === 'YOUR_API_KEY_HERE') {
+                alert('Error: YouTube API Key not configured. Please insert your API key in the code.');
+                return;
+            }
+
+            currentQuery = query;
+            showLoading();
+
+            // Real call to YouTube Data API v3
+            const searchParams = new URLSearchParams({
+                part: 'snippet',
+                q: query,
+                type: 'video',
+                maxResults: 12,
+                key: YOUTUBE_API_KEY,
+                regionCode: 'US',  // Results localized for US
+                relevanceLanguage: 'en'  // Preference for English content
+            });
+
+            fetch(`${YOUTUBE_API_URL}?${searchParams}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data received from YouTube:', data);
+                    
+                    if (!data.items || data.items.length === 0) {
+                        currentResults = [];
+                    } else {
+                        // Transform YouTube data into our client format
+                        currentResults = data.items.map(item => ({
+                            id: item.id.videoId,
+                            title: item.snippet.title,
+                            channel: item.snippet.channelTitle,
+                            description: item.snippet.description,
+                            thumbnail: item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : '',
+                            publishTime: item.snippet.publishTime
+                        }));
+                    }
+                    
+                    displayResults();
+                })
+                .catch(error => {
+                    console.error('Error in YouTube search:', error);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('searchPage').style.display = 'flex';
+                    
+                    let errorMessage = 'An error occurred during the search. ';
+                    if (error.message.includes('403')) {
+                        errorMessage += 'Check that your API key is valid and has the correct permissions.';
+                    } else if (error.message.includes('400')) {
+                        errorMessage += 'The request is not valid. Check the parameters.';
+                    } else {
+                        errorMessage += 'Check your internet connection and try again.';
+                    }
+                    
+                    alert(errorMessage);
+                });
+        }
+
+        // Status announcement for screen readers
+        function announceStatus(message) {
+            const statusDiv = document.createElement('div');
+            statusDiv.setAttribute('aria-live', 'polite');
+            statusDiv.setAttribute('aria-atomic', 'true');
+            statusDiv.className = 'sr-only';
+            statusDiv.textContent = message;
+            document.body.appendChild(statusDiv);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                document.body.removeChild(statusDiv);
+            }, 3000);
+        }
+
+        function showLoading() {
+            document.getElementById('searchPage').style.display = 'none';
+            document.getElementById('resultsPage').style.display = 'none';
+            document.getElementById('videoPage').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function displayResults() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('resultsPage').style.display = 'block';
+            document.getElementById('currentSearch').textContent = `Results for: "${currentQuery}"`;
+
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = '';
+
+            if (currentResults.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; font-size: 24px; color: #666; grid-column: 1/-1;" role="alert" aria-live="polite">No videos found. Try with different words.</div>';
+                return;
+            }
+
+            currentResults.forEach((video, index) => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.onclick = () => playVideo(video);
+                videoCard.setAttribute('role', 'listitem');
+                videoCard.setAttribute('tabindex', '0');
+                videoCard.setAttribute('aria-label', `Video: ${video.title} by ${video.channel}. Press Enter to watch.`);
+                
+                // Keyboard handling
+                videoCard.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        playVideo(video);
+                    }
+                });
+
+                videoCard.innerHTML = `
+                    <div class="video-thumbnail">
+                        ${video.thumbnail ? 
+                            `<img src="${video.thumbnail}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">` :
+                            `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; background: #333;">▶ Video</div>`
+                        }
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">${video.title}</div>
+                        <div class="video-channel">${video.channel}</div>
+                        <div class="video-views">${video.publishTime ? formatDate(video.publishTime) : ''}</div>
+                    </div>
+                `;
+
+                grid.appendChild(videoCard);
+            });
+        }
+
+        function playVideo(video) {
+            document.getElementById('resultsPage').style.display = 'none';
+            document.getElementById('videoPage').style.display = 'block';
+
+            // Update button text with current query
+            const backButton = document.querySelector('.video-header .back-button[onclick="showResultsPage()"]');
+            const queryText = currentQuery.length > 25 ? currentQuery.substring(0, 25) + '...' : currentQuery;
+            backButton.textContent = `← Results for "${queryText}"`;
+            
+            // Update aria-label for accessibility too
+            backButton.setAttribute('aria-label', `Return to search results for "${currentQuery}"`);
+
+            document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1`;
+            document.getElementById('videoTitle').textContent = video.title;
+            document.getElementById('videoChannel').textContent = `Channel: ${video.channel}`;
+            document.getElementById('videoViews').textContent = video.publishTime ? formatDate(video.publishTime) : '';
+        }
+
+        function showResultsPage() {
+            document.getElementById('videoPage').style.display = 'none';
+            document.getElementById('resultsPage').style.display = 'block';
+            // Stop the video
+            document.getElementById('videoPlayer').src = '';
+        }
+
+        function showSearchPage() {
+            document.getElementById('resultsPage').style.display = 'none';
+            document.getElementById('videoPage').style.display = 'none';
+            document.getElementById('searchPage').style.display = 'flex';
+            // Stop the video and clear the search
+            document.getElementById('videoPlayer').src = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchInput').focus();
+            
+            // Announce the page change
+            announceStatus('You have returned to the main search page');
+        }
+
+        // Keyboard handling for the entire app
+        document.addEventListener('keydown', function(e) {
+            // ESC to go back
+            if (e.key === 'Escape') {
+                const currentPage = getCurrentPage();
+                if (currentPage === 'video') {
+                    showResultsPage();
+                } else if (currentPage === 'results') {
+                    showSearchPage();
+                }
+            }
+        });
+
+        function getCurrentPage() {
+            if (document.getElementById('videoPage').style.display !== 'none') return 'video';
+            if (document.getElementById('resultsPage').style.display !== 'none') return 'results';
+            return 'search';
+        }
+
+        // Auto focus on load
+        window.onload = function() {
+            document.getElementById('searchInput').focus();
+        };
+    </script>
+</body>
+</html>

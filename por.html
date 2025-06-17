@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Simplificado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Pagina di ricerca */
+        .search-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 25px;
+            font-size: 24px;
+            border: 3px solid #ddd;
+            border-radius: 50px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #ff0000;
+        }
+
+        .search-button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            min-width: 200px;
+        }
+
+        .search-button:hover {
+            background-color: #cc0000;
+        }
+
+        /* Pagina risultati */
+        .results-page {
+            display: none;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .back-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #218838;
+        }
+
+        .current-search {
+            font-size: 24px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .video-channel {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .video-views {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* Pagina video */
+        .video-page {
+            display: none;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .video-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .video-player-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-player {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+
+        .video-details {
+            padding: 30px;
+            background: white;
+            margin-top: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .video-title-large {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .video-meta {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            font-size: 24px;
+            color: #666;
+        }
+
+        /* Focus visibile per navigazione keyboard */
+        .search-input:focus,
+        .search-button:focus,
+        .back-button:focus,
+        .video-card:focus {
+            outline: 4px solid #0066cc;
+            outline-offset: 2px;
+        }
+
+        /* Miglioramento contrasti per AAA */
+        .search-button:focus,
+        .back-button:focus {
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.3);
+        }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Status announcement styles */
+        .status-announcement {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            padding: 15px;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .search-input {
+                font-size: 20px;
+                padding: 18px 20px;
+            }
+
+            .search-button {
+                font-size: 20px;
+                padding: 18px 35px;
+            }
+
+            .logo {
+                font-size: 36px;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .video-player {
+                height: 250px;
+            }
+        }
+        /* Fix per coerenza colori - tutto rosso brand */
+
+        /* Bottone standard per tutte le azioni "Nuova Ricerca" */
+        .back-button.new-search {
+            background-color: #ff0000 !important; /* Rosso brand come search button */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button.new-search:hover {
+            background-color: #cc0000 !important; /* Stesso hover del search button */
+        }
+
+        /* Bottone per "Torna ai risultati" - può rimanere verde per differenziare */
+        .back-button.results {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .back-button.results:hover {
+            background-color: #218838;
+        }
+
+        /* CSS per gli esempi semplici */
+        .search-examples {
+            max-width: 600px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .examples-intro {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .examples-text {
+            font-size: 16px;
+            color: #888;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .examples-intro {
+                font-size: 16px;
+            }
+            
+            .examples-text {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Pagina di ricerca principale -->
+    <main class="search-page" id="searchPage">
+        <header>
+            <h1 class="logo">YouTube Simplificado</h1>
+            <p class="sr-only">Interface simplificada para buscar e assistir vídeos do YouTube</p>
+            
+        </header>
+
+        <!-- Sezione esempi semplice da aggiungere dopo il logo -->
+        <section class="search-examples">
+            <p class="examples-intro">Exemplos de pesquisa:</p>
+            <div class="examples-text">
+                música brasileira • receitas de comida
+            </div>
+        </section>
+
+        <section class="search-container">
+            <label for="searchInput" class="sr-only">Pesquisar vídeos no YouTube</label>
+            <input type="text" 
+                   class="search-input" 
+                   id="searchInput" 
+                   placeholder="Pesquisar vídeos..." 
+                   autocomplete="off"
+                   aria-describedby="search-help">
+            <div id="search-help" class="sr-only">Digite palavras para pesquisar vídeos e pressione Enter ou clique em Pesquisar</div>
+            <div style="text-align: center;">
+                <button class="search-button" 
+                        onclick="searchVideos()" 
+                        aria-describedby="search-button-help">
+                    Pesquisar
+                </button>
+                <div id="search-button-help" class="sr-only">Iniciar a pesquisa de vídeos com as palavras digitadas</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading con aria-live per screen readers -->
+    <div class="loading" id="loading" aria-live="polite" role="status">
+        <div class="status-announcement">Pesquisando vídeos...</div>
+        <div class="sr-only">Pesquisa em andamento, aguarde por favor</div>
+    </div>
+
+    <!-- Pagina risultati -->
+    <main class="results-page" id="resultsPage" role="main">
+        <header class="header">
+            <button class="back-button new-search" 
+                    onclick="showSearchPage()" 
+                    aria-label="Voltar à página de pesquisa para buscar outros vídeos">
+                ← Nova Pesquisa
+            </button>
+            <h1 class="current-search" id="currentSearch"></h1>
+        </header>
+        <section aria-live="polite" aria-label="Resultados da pesquisa">
+            <div class="video-grid" id="videoGrid" role="list"></div>
+        </section>
+    </main>
+
+    <!-- Pagina video -->
+    <main class="video-page" id="videoPage" role="main">
+        <header class="video-header">
+            <button class="back-button results" 
+                    onclick="showResultsPage()" 
+                    aria-label="Voltar aos resultados da pesquisa">
+                ← Voltar aos Resultados
+            </button>
+            <button class="back-button new-search" 
+                    onclick="showSearchPage()" 
+                    style="background-color: #17a2b8;"
+                    aria-label="Voltar à página principal para uma nova pesquisa">
+                ← Nova Pesquisa
+            </button>
+        </header>
+        <section class="video-player-container" aria-label="Player de vídeo">
+            <iframe class="video-player" 
+                    id="videoPlayer" 
+                    src="" 
+                    allowfullscreen
+                    title="Vídeo do YouTube selecionado"
+                    aria-describedby="video-description"></iframe>
+        </section>
+        <section class="video-details" aria-labelledby="video-title">
+            <h1 class="video-title-large" id="videoTitle"></h1>
+            <div class="video-meta" id="videoChannel" aria-label="Nome do canal"></div>
+            <div class="video-meta" id="videoViews" aria-label="Data de publicação"></div>
+            <div id="video-description" class="sr-only">Detalhes do vídeo atualmente em reprodução</div>
+        </section>
+    </main>
+    <script src="config.js"></script>
+    <script>
+        const YOUTUBE_API_KEY = CONFIG.YOUTUBE_API_KEY;
+        const YOUTUBE_API_URL = CONFIG.YOUTUBE_API_URL;
+
+        let currentQuery = '';
+        let currentResults = [];
+
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffTime = Math.abs(now - date);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) return 'há 1 dia';
+                if (diffDays < 30) return `há ${diffDays} dias`;
+                if (diffDays < 365) return `há ${Math.floor(diffDays / 30)} meses`;
+                return `há ${Math.floor(diffDays / 365)} ano${Math.floor(diffDays / 365) > 1 ? 's' : ''}`;
+            } catch (e) {
+                return 'Data não disponível';
+            }
+        }
+
+        // Event listener per Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchVideos();
+            }
+        });
+
+        function searchVideos() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            // Verifica que l'API key sia configurata
+            if (YOUTUBE_API_KEY === 'YOUR_API_KEY_HERE') {
+                alert('Erro: Chave da API do YouTube não configurada. Insira sua chave de API no código.');
+                return;
+            }
+
+            currentQuery = query;
+            showLoading();
+
+            // Chiamata reale alle YouTube Data API v3
+            const searchParams = new URLSearchParams({
+                part: 'snippet',
+                q: query,
+                type: 'video',
+                maxResults: 12,
+                key: YOUTUBE_API_KEY,
+                regionCode: 'BR',  // Resultados localizados para o Brasil
+                relevanceLanguage: 'pt'  // Preferência para conteúdo em português
+            });
+
+            fetch(`${YOUTUBE_API_URL}?${searchParams}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro da API: ${response.status} - ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Dados recebidos do YouTube:', data);
+                    
+                    if (!data.items || data.items.length === 0) {
+                        currentResults = [];
+                    } else {
+                        // Trasforma i dati di YouTube nel formato del nostro client
+                        currentResults = data.items.map(item => ({
+                            id: item.id.videoId,
+                            title: item.snippet.title,
+                            channel: item.snippet.channelTitle,
+                            description: item.snippet.description,
+                            thumbnail: item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : '',
+                            publishTime: item.snippet.publishTime
+                        }));
+                    }
+                    
+                    displayResults();
+                })
+                .catch(error => {
+                    console.error('Erro na pesquisa do YouTube:', error);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('searchPage').style.display = 'flex';
+                    
+                    let errorMessage = 'Ocorreu um erro na pesquisa. ';
+                    if (error.message.includes('403')) {
+                        errorMessage += 'Verifique se sua chave de API é válida e tem as permissões corretas.';
+                    } else if (error.message.includes('400')) {
+                        errorMessage += 'A solicitação é inválida. Verifique os parâmetros.';
+                    } else {
+                        errorMessage += 'Verifique sua conexão com a internet e tente novamente.';
+                    }
+                    
+                    alert(errorMessage);
+                });
+        }
+
+        // Annuncio status per screen readers
+        function announceStatus(message) {
+            const statusDiv = document.createElement('div');
+            statusDiv.setAttribute('aria-live', 'polite');
+            statusDiv.setAttribute('aria-atomic', 'true');
+            statusDiv.className = 'sr-only';
+            statusDiv.textContent = message;
+            document.body.appendChild(statusDiv);
+            
+            // Rimuovi dopo 3 secondi
+            setTimeout(() => {
+                document.body.removeChild(statusDiv);
+            }, 3000);
+        }
+
+        function showLoading() {
+            document.getElementById('searchPage').style.display = 'none';
+            document.getElementById('resultsPage').style.display = 'none';
+            document.getElementById('videoPage').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function displayResults() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('resultsPage').style.display = 'block';
+            document.getElementById('currentSearch').textContent = `Resultados para: "${currentQuery}"`;
+
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = '';
+
+            if (currentResults.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; font-size: 24px; color: #666; grid-column: 1/-1;" role="alert" aria-live="polite">Nenhum vídeo encontrado. Tente com palavras diferentes.</div>';
+                return;
+            }
+
+            currentResults.forEach((video, index) => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.onclick = () => playVideo(video);
+                videoCard.setAttribute('role', 'listitem');
+                videoCard.setAttribute('tabindex', '0');
+                videoCard.setAttribute('aria-label', `Vídeo: ${video.title} do canal ${video.channel}. Pressione Enter para assistir.`);
+                
+                // Gestione keyboard
+                videoCard.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        playVideo(video);
+                    }
+                });
+
+                videoCard.innerHTML = `
+                    <div class="video-thumbnail">
+                        ${video.thumbnail ? 
+                            `<img src="${video.thumbnail}" alt="Miniatura do vídeo" style="width: 100%; height: 100%; object-fit: cover;">` :
+                            `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; background: #333;">▶ Vídeo</div>`
+                        }
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">${video.title}</div>
+                        <div class="video-channel">${video.channel}</div>
+                        <div class="video-views">${video.publishTime ? formatDate(video.publishTime) : ''}</div>
+                    </div>
+                `;
+
+                grid.appendChild(videoCard);
+            });
+        }
+
+        function playVideo(video) {
+            document.getElementById('resultsPage').style.display = 'none';
+            document.getElementById('videoPage').style.display = 'block';
+
+            // Aggiorna il testo del bottone con la query corrente
+            const backButton = document.querySelector('.video-header .back-button[onclick="showResultsPage()"]');
+            const queryText = currentQuery.length > 20 ? currentQuery.substring(0, 20) + '...' : currentQuery;
+            backButton.textContent = `← Resultados "${queryText}"`;
+            
+            // Aggiorna anche l'aria-label per accessibilità
+            backButton.setAttribute('aria-label', `Voltar aos resultados da pesquisa por "${currentQuery}"`);
+
+            document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1`;
+            document.getElementById('videoTitle').textContent = video.title;
+            document.getElementById('videoChannel').textContent = `Canal: ${video.channel}`;
+            document.getElementById('videoViews').textContent = video.publishTime ? formatDate(video.publishTime) : '';
+        }
+
+        function showResultsPage() {
+            document.getElementById('videoPage').style.display = 'none';
+            document.getElementById('resultsPage').style.display = 'block';
+            // Ferma il video
+            document.getElementById('videoPlayer').src = '';
+        }
+
+        function showSearchPage() {
+            document.getElementById('resultsPage').style.display = 'none';
+            document.getElementById('videoPage').style.display = 'none';
+            document.getElementById('searchPage').style.display = 'flex';
+            // Ferma il video e pulisce la ricerca
+            document.getElementById('videoPlayer').src = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchInput').focus();
+            
+            // Annuncia il cambio di pagina
+            announceStatus('Você voltou à página principal de pesquisa');
+        }
+
+        // Gestione keyboard per l'intera app
+        document.addEventListener('keydown', function(e) {
+            // ESC per tornare indietro
+            if (e.key === 'Escape') {
+                const currentPage = getCurrentPage();
+                if (currentPage === 'video') {
+                    showResultsPage();
+                } else if (currentPage === 'results') {
+                    showSearchPage();
+                }
+            }
+        });
+
+        function getCurrentPage() {
+            if (document.getElementById('videoPage').style.display !== 'none') return 'video';
+            if (document.getElementById('resultsPage').style.display !== 'none') return 'results';
+            return 'search';
+        }
+
+        // Focus automatico al caricamento
+        window.onload = function() {
+            document.getElementById('searchInput').focus();
+        };
+    </script>
+</body>
+</html>
