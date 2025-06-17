@@ -1,8 +1,8 @@
-# TubeEase
+# BigButtonPlay
 
 A simple, senior-friendly client-side tool to interact with YouTube's API. 
 
-**Designed specifically for older adults and users who are not comfortable with technology.** TubeEase features only 2-3 large, clearly visible buttons to make YouTube searches as simple as possible.
+**Designed specifically for older adults and users who are not comfortable with technology.** BigButtonPlay features only 2-3 large, clearly visible buttons to make YouTube searches as simple as possible.
 
 This is an **open-source, non-profit project** created to help bridge the digital divide and make technology more accessible to more people.
 
@@ -18,7 +18,7 @@ This is an **open-source, non-profit project** created to help bridge the digita
 
 ## Setup Instructions
 
-To use TubeEase, you need to get a YouTube API key from Google Cloud Console. Follow these steps:
+To use BigButtonPlay, you need to get a YouTube API key from Google Cloud Console. Follow these steps:
 
 ### Process Overview (details below)
 
@@ -37,11 +37,11 @@ flowchart TD
     J --> K["Save API Key Settings"]
     K --> L["Copy Your API Key"]
     L --> M["Rename config file to config.js"]
-    M --> N["Open config.js in TubeEase folder"]
+    M --> N["Open config.js in BigButtonPlay folder"]
     N --> O["Replace 'your-youtube-api-key-here' with actual key"]
     O --> P["Save config.js"]
     P --> Q["Open ita.html (or your language version) in browser"]
-    Q --> R[Ready to Use TubeEase! 🎯]
+    Q --> R[Ready to Use BigButtonPlay! 🎯]
     
     style A fill:#e1f5fe
     style P fill:#c8e6c9
@@ -74,8 +74,8 @@ flowchart TD
    - Check only "YouTube Data API v3" from the list
 3. Click "Save"
 
-### Step 5: Configure TubeEase
-1. In your local TubeEase folder, rename the configuration file to `config.js`
+### Step 5: Configure BigButtonPlay
+1. In your local BigButtonPlay folder, rename the configuration file to `config.js`
 2. Open the `config.js` file
 2. Find this section:
 ```javascript
