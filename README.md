@@ -4,6 +4,12 @@ A simple, senior-friendly client-side tool to interact with YouTube's API.
 
 **Designed specifically for older adults and users who are not comfortable with technology.** BigButtonPlay features only 2-3 large, clearly visible buttons to make YouTube searches as simple as possible.
 
+<p float="left">
+  <img src="images/screenshot1.png" width="200"/>
+  <img src="images/screenshot2.png" width="200"/>
+  
+</p>
+
 This is an **open-source, non-profit project** created to help bridge the digital divide and make technology more accessible to more people.
 
 **Important Note:** To use Google's free YouTube API, a one-time technical setup is required. This configuration step needs to be completed by someone with basic technical knowledge (a family member, friend, or tech-savvy person). Once configured, the tool becomes completely simple to use for everyone.
