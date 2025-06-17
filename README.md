@@ -20,7 +20,7 @@ This is an **open-source, non-profit project** created to help bridge the digita
 3. Configure your API key in the `config.js` file
 4. Open `ita.html` (or your preferred language version) and you're ready to go!
 
-*Note: More languages coming soon! Currently available - UN Official Languages: English (eng.html), Spanish (esp.html), Chinese (chn.html), French (fra.html), Russian (rus.html), Arabic (ara.html) plus additional major languages: Italian (ita.html), Hindi (hin.html), Portuguese (por.html).*
+*Note: More languages coming soon! Currently available: UN Official Languages: English (eng.html), Spanish (esp.html), Chinese (chn.html), French (fra.html), Russian (rus.html), Arabic (ara.html) plus additional major languages: Italian (ita.html), Hindi (hin.html), Portuguese (por.html).*
 
 ## Setup Instructions
 
