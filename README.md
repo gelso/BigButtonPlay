@@ -112,6 +112,7 @@ const CONFIG = {
 - **"API key not valid"**: Check that you copied the key correctly and that YouTube Data API v3 is enabled
 - **"Access denied"**: Make sure your API key restrictions are set correctly
 - **"Quota exceeded"**: You've reached the daily limit for API calls
+- **"Setup process too complex"**: We know the API key configuration can be challenging for non-technical users. Please help us improve by sharing your suggestions in the [Issues](https://github.com/gelso/BigButtonPlay/issues) section!
 
 ## Support
 If you need help, check the [YouTube Data API documentation](https://developers.google.com/youtube/v3) or create an issue in this repository.
