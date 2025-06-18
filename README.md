@@ -7,6 +7,7 @@ A simple, senior-friendly client-side tool to interact with YouTube's API.
 <p float="left">
   <img src="images/screenshot1.png" width="200"/>
   <img src="images/screenshot2.png" width="200"/>
+  <img src="images/screenshot3.png" width="200"/>
   
 </p>
 
