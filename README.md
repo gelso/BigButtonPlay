@@ -2,12 +2,12 @@
 
 A simple, senior-friendly client-side tool to interact with YouTube's API. 
 
-**Designed specifically for older adults and users who are not comfortable with technology.** BigButtonPlay features only 2-3 large, clearly visible buttons to make YouTube searches as simple as possible.
+**Designed specifically for older adults and users who are not comfortable with technology.** BigButtonPlay features only 2-3 large, clearly visible buttons to make using YouTube as simple as possible.
 
 <p float="left">
   <img src="images/screenshot1.png" width="200"/>
   <img src="images/screenshot2.png" width="200"/>
-  <img src="images/screenshot3.png" width="200"/>
+  <img src="images/screenshot.png" width="200"/>
   
 </p>
 
