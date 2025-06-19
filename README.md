@@ -145,8 +145,6 @@ This project is licensed under **Creative Commons Attribution-NonCommercial-Shar
 
 BigButtonPlay was created specifically to **bridge the digital divide** and make technology accessible to seniors and people with difficulties. It's a **social mission project**, not a commercial product.
 
-<!-- **Commercial licensing:** For commercial use cases, please [contact us](mailto:your-email@example.com) to discuss licensing options. -->
-
 See the [LICENSE](LICENSE) file for complete terms.
 
 ---
