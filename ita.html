@@ -442,10 +442,14 @@
             <div id="video-description" class="sr-only">Dettagli del video attualmente in riproduzione</div>
         </section>
     </main>
-    <script src="config.js"></script>
     <script>
-        const YOUTUBE_API_KEY = CONFIG.YOUTUBE_API_KEY;
-        const YOUTUBE_API_URL = CONFIG.YOUTUBE_API_URL;
+        // Configurazione dinamica da localStorage
+        let YOUTUBE_API_KEY = localStorage.getItem('bigbuttonplay_api_key');
+
+        if (!YOUTUBE_API_KEY) {
+            window.location.href = './config.html';
+        }
+        const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 
         let currentQuery = '';
         let currentResults = [];

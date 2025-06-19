@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigButtonPlay - Choose Language</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#ff0000">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .language-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .language-card:hover {
+            background: #ff0000;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255,0,0,0.2);
+            border-color: #ff0000;
+        }
+
+        .language-flag {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .language-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .language-native {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .config-section {
+            border-top: 1px solid #e9ecef;
+            padding-top: 30px;
+            margin-top: 20px;
+        }
+
+        .config-title {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .config-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .config-button:hover {
+            background-color: #218838;
+            color: white;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .status-configured {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-not-configured {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 30px 20px;
+            }
+            
+            .logo {
+                font-size: 36px;
+            }
+            
+            .subtitle {
+                font-size: 20px;
+            }
+            
+            .language-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1 class="logo">BigButtonPlay</h1>
+        <p class="subtitle">YouTube Made Simple for Everyone</p>
+        
+        <div class="language-grid">
+            <a href="ita.html" class="language-card">
+                <div class="language-flag">🇮🇹</div>
+                <div class="language-name">Italian</div>
+                <div class="language-native">Italiano</div>
+            </a>
+            
+            <a href="eng.html" class="language-card">
+                <div class="language-flag">🇺🇸</div>
+                <div class="language-name">English</div>
+                <div class="language-native">English</div>
+            </a>
+            
+            <a href="esp.html" class="language-card">
+                <div class="language-flag">🇪🇸</div>
+                <div class="language-name">Spanish</div>
+                <div class="language-native">Español</div>
+            </a>
+            
+            <a href="fra.html" class="language-card">
+                <div class="language-flag">🇫🇷</div>
+                <div class="language-name">French</div>
+                <div class="language-native">Français</div>
+            </a>
+            
+            <a href="por.html" class="language-card">
+                <div class="language-flag">🇧🇷</div>
+                <div class="language-name">Portuguese</div>
+                <div class="language-native">Português</div>
+            </a>
+            
+            <a href="deu.html" class="language-card">
+                <div class="language-flag">🇩🇪</div>
+                <div class="language-name">German</div>
+                <div class="language-native">Deutsch</div>
+            </a>
+            
+            <a href="rus.html" class="language-card">
+                <div class="language-flag">🇷🇺</div>
+                <div class="language-name">Russian</div>
+                <div class="language-native">Русский</div>
+            </a>
+            
+            <a href="chn.html" class="language-card">
+                <div class="language-flag">🇨🇳</div>
+                <div class="language-name">Chinese</div>
+                <div class="language-native">中文</div>
+            </a>
+            
+            <a href="ara.html" class="language-card">
+                <div class="language-flag">🇸🇦</div>
+                <div class="language-name">Arabic</div>
+                <div class="language-native">العربية</div>
+            </a>
+        </div>
+        
+        <div class="config-section">
+            <div class="config-title">
+                Configuration Status 
+                <span id="configStatus" class="status-indicator"></span>
+            </div>
+            <a href="config.html" class="config-button">
+                ⚙️ Setup YouTube API Key
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Verifica stato configurazione
+        window.onload = function() {
+            const apiKey = localStorage.getItem('bigbuttonplay_api_key');
+            const statusElement = document.getElementById('configStatus');
+            
+            if (apiKey) {
+                statusElement.textContent = '✅ Configured';
+                statusElement.className = 'status-indicator status-configured';
+            } else {
+                statusElement.textContent = '⚠️ Setup Required';
+                statusElement.className = 'status-indicator status-not-configured';
+            }
+        };
+    </script>
+</body>
+</html>

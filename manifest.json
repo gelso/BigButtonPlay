@@ -1,0 +1,13 @@
+{
+  "name": "BigButtonPlay - Simple YouTube",
+  "short_name": "BigButtonPlay",
+  "description": "YouTube made simple for everyone with big, clear buttons",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#ff0000",
+  "orientation": "any",
+  "scope": "./",
+  "categories": ["accessibility", "entertainment", "utilities"],
+  "lang": "en"
+}

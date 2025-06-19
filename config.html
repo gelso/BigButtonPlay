@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple YouTube</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#ff0000">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Pagina di ricerca */
+        .search-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 25px;
+            font-size: 24px;
+            border: 3px solid #ddd;
+            border-radius: 50px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #ff0000;
+        }
+
+        .search-button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            min-width: 200px;
+        }
+
+        .search-button:hover {
+            background-color: #cc0000;
+        }
+
+        .config-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .config-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .config-button:hover {
+            background-color: #218838;
+        }
+
+        /* Altri stili come nel tuo file originale... */
+        .search-examples {
+            max-width: 600px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .examples-intro {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .examples-text {
+            font-size: 16px;
+            color: #888;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .search-input {
+                font-size: 20px;
+                padding: 18px 20px;
+            }
+
+            .search-button {
+                font-size: 20px;
+                padding: 18px 35px;
+            }
+
+            .logo {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Pagina di ricerca principale -->
+    <main class="search-page" id="searchPage">
+        <header>
+            <h1 class="logo">Simple YouTube</h1>
+        </header>
+
+        <!-- Warning se non configurato -->
+        <div class="config-warning" id="configWarning" style="display: none;">
+            <h3>⚙️ Configurazione Richiesta</h3>
+            <p>Per utilizzare BigButtonPlay è necessario configurare una YouTube API Key.</p>
+            <button class="config-button" onclick="goToConfig()">
+                Vai alla Configurazione
+            </button>
+        </div>
+
+        <!-- Sezione esempi -->
+        <section class="search-examples" id="searchExamples">
+            <p class="examples-intro">Esempi di ricerca:</p>
+            <div class="examples-text">
+                concerto per clarinetto • ragù della nonna
+            </div>
+        </section>
+
+        <section class="search-container">
+            <label for="searchInput" class="sr-only">Cerca video su YouTube</label>
+            <input type="text" 
+                   class="search-input" 
+                   id="searchInput" 
+                   placeholder="Cerca video..." 
+                   autocomplete="off">
+            <div style="text-align: center;">
+                <button class="search-button" 
+                        onclick="searchVideos()">
+                    Cerca Video
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Le altre pagine (risultati, video) rimangono uguali al tuo codice originale -->
+
+    <script>
+        // Configurazione dinamica
+        let YOUTUBE_API_KEY = '';
+        const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
+
+        // Verifica configurazione all'avvio
+        window.onload = function() {
+            checkConfiguration();
+            document.getElementById('searchInput').focus();
+        };
+
+        function checkConfiguration() {
+            const savedApiKey = localStorage.getItem('bigbuttonplay_api_key');
+            
+            if (!savedApiKey) {
+                // Nessuna configurazione trovata
+                document.getElementById('configWarning').style.display = 'block';
+                document.getElementById('searchExamples').style.display = 'none';
+                return false;
+            }
+            
+            // Configurazione trovata
+            YOUTUBE_API_KEY = savedApiKey;
+            document.getElementById('configWarning').style.display = 'none';
+            document.getElementById('searchExamples').style.display = 'block';
+            return true;
+        }
+
+        function goToConfig() {
+            window.location.href = './config.html';
+        }
+
+        function searchVideos() {
+            if (!checkConfiguration()) {
+                alert('Per favore configura prima la YouTube API Key');
+                goToConfig();
+                return;
+            }
+
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            // Il resto del codice di ricerca rimane uguale al tuo originale
+            // Ma ora usa YOUTUBE_API_KEY dalla configurazione
+            console.log('Searching with API key:', YOUTUBE_API_KEY ? 'Found' : 'Not found');
+            
+            // ... resto della logica di ricerca ...
+        }
+
+        // Event listener per Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchVideos();
+            }
+        });
+    </script>
+</body>
+</html>
