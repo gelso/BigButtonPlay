@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple YouTube</title>
+    <title>BigButtonPlay - Configurazione</title>
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -23,223 +23,303 @@
             background-color: #f8f9fa;
             color: #333;
             line-height: 1.6;
-        }
-
-        /* Pagina di ricerca */
-        .search-page {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
             padding: 20px;
         }
 
-        .logo {
-            font-size: 48px;
-            font-weight: bold;
-            color: #ff0000;
-            margin-bottom: 40px;
+        .config-container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-align: center;
         }
 
-        .search-container {
-            width: 100%;
-            max-width: 600px;
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
             margin-bottom: 30px;
         }
 
-        .search-input {
+        .config-section {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .config-label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .api-input {
             width: 100%;
-            padding: 20px 25px;
-            font-size: 24px;
-            border: 3px solid #ddd;
-            border-radius: 50px;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
             outline: none;
             transition: border-color 0.3s;
         }
 
-        .search-input:focus {
+        .api-input:focus {
             border-color: #ff0000;
         }
 
-        .search-button {
+        .config-button {
             background-color: #ff0000;
             color: white;
             border: none;
-            padding: 20px 40px;
-            font-size: 24px;
-            border-radius: 50px;
+            padding: 18px 40px;
+            font-size: 20px;
+            border-radius: 10px;
             cursor: pointer;
-            margin-top: 20px;
+            margin: 10px;
             transition: background-color 0.3s;
             min-width: 200px;
         }
 
-        .search-button:hover {
+        .config-button:hover {
             background-color: #cc0000;
         }
 
-        .config-warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            text-align: center;
-            max-width: 600px;
-        }
-
-        .config-button {
+        .config-button.secondary {
             background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: background-color 0.3s;
         }
 
-        .config-button:hover {
+        .config-button.secondary:hover {
             background-color: #218838;
         }
 
-        /* Altri stili come nel tuo file originale... */
-        .search-examples {
-            max-width: 600px;
-            margin-bottom: 25px;
-            text-align: center;
+        .config-button.back {
+            background-color: #6c757d;
         }
 
-        .examples-intro {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 8px;
-            font-weight: 500;
+        .config-button.back:hover {
+            background-color: #5a6268;
         }
 
-        .examples-text {
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
             font-size: 16px;
-            color: #888;
-            font-style: italic;
-            line-height: 1.4;
+            display: none;
+        }
+
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .help-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .help-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .help-text {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .help-link {
+            color: #ff0000;
+            text-decoration: none;
+        }
+
+        .help-link:hover {
+            text-decoration: underline;
         }
 
         @media (max-width: 768px) {
-            .search-input {
-                font-size: 20px;
-                padding: 18px 20px;
+            .config-container {
+                padding: 30px 20px;
             }
-
-            .search-button {
-                font-size: 20px;
-                padding: 18px 35px;
-            }
-
+            
             .logo {
-                font-size: 36px;
+                font-size: 28px;
+            }
+            
+            .config-button {
+                font-size: 18px;
+                padding: 15px 30px;
+                min-width: 180px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Pagina di ricerca principale -->
-    <main class="search-page" id="searchPage">
-        <header>
-            <h1 class="logo">Simple YouTube</h1>
-        </header>
+    <div class="config-container">
+        <h1 class="logo">BigButtonPlay</h1>
+        <p class="subtitle">Configurazione YouTube API</p>
 
-        <!-- Warning se non configurato -->
-        <div class="config-warning" id="configWarning" style="display: none;">
-            <h3>⚙️ Configurazione Richiesta</h3>
-            <p>Per utilizzare BigButtonPlay è necessario configurare una YouTube API Key.</p>
-            <button class="config-button" onclick="goToConfig()">
-                Vai alla Configurazione
+        <div id="configForm">
+            <div class="config-section">
+                <label for="apiKey" class="config-label">YouTube API Key:</label>
+                <input type="text" 
+                       id="apiKey" 
+                       class="api-input" 
+                       placeholder="Inserisci la tua YouTube API Key..."
+                       autocomplete="off">
+            </div>
+
+            <div class="status-message" id="statusMessage"></div>
+
+            <button class="config-button" onclick="saveApiKey()">
+                💾 Salva Configurazione
+            </button>
+            
+            <button class="config-button secondary" onclick="testAndGo()" id="goButton" style="display: none;">
+                ▶️ Apri BigButtonPlay
+            </button>
+
+            <button class="config-button back" onclick="goToHome()">
+                🏠 Torna alla Home
             </button>
         </div>
 
-        <!-- Sezione esempi -->
-        <section class="search-examples" id="searchExamples">
-            <p class="examples-intro">Esempi di ricerca:</p>
-            <div class="examples-text">
-                concerto per clarinetto • ragù della nonna
+        <div id="successView" style="display: none;">
+            <div class="status-message status-success">
+                ✅ Configurazione salvata con successo!
             </div>
-        </section>
+            
+            <button class="config-button secondary" onclick="openBigButtonPlay()">
+                ▶️ Apri BigButtonPlay
+            </button>
+            
+            <button class="config-button" onclick="editConfig()">
+                ⚙️ Modifica Configurazione
+            </button>
 
-        <section class="search-container">
-            <label for="searchInput" class="sr-only">Cerca video su YouTube</label>
-            <input type="text" 
-                   class="search-input" 
-                   id="searchInput" 
-                   placeholder="Cerca video..." 
-                   autocomplete="off">
-            <div style="text-align: center;">
-                <button class="search-button" 
-                        onclick="searchVideos()">
-                    Cerca Video
-                </button>
+            <button class="config-button back" onclick="goToHome()">
+                🏠 Torna alla Home
+            </button>
+        </div>
+
+        <div class="help-section">
+            <div class="help-title">💡 Come ottenere la YouTube API Key:</div>
+            <div class="help-text">
+                1. Vai su <a href="https://console.cloud.google.com" target="_blank" class="help-link">Google Cloud Console</a><br>
+                2. Crea un nuovo progetto<br>
+                3. Abilita "YouTube Data API v3"<br>
+                4. Crea credenziali → API Key<br>
+                5. Copia e incolla la chiave qui sopra<br><br>
+                <strong>Serve aiuto?</strong> Leggi la <a href="https://github.com/gelso/BigButtonPlay#setup-instructions" target="_blank" class="help-link">guida completa</a>
             </div>
-        </section>
-    </main>
-
-    <!-- Le altre pagine (risultati, video) rimangono uguali al tuo codice originale -->
+        </div>
+    </div>
 
     <script>
-        // Configurazione dinamica
-        let YOUTUBE_API_KEY = '';
-        const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
-
-        // Verifica configurazione all'avvio
+        // Verifica se esiste già una configurazione
         window.onload = function() {
-            checkConfiguration();
-            document.getElementById('searchInput').focus();
+            const savedApiKey = localStorage.getItem('bigbuttonplay_api_key');
+            if (savedApiKey) {
+                document.getElementById('configForm').style.display = 'none';
+                document.getElementById('successView').style.display = 'block';
+            }
         };
 
-        function checkConfiguration() {
-            const savedApiKey = localStorage.getItem('bigbuttonplay_api_key');
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('statusMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `status-message status-${type}`;
+            messageDiv.style.display = 'block';
             
-            if (!savedApiKey) {
-                // Nessuna configurazione trovata
-                document.getElementById('configWarning').style.display = 'block';
-                document.getElementById('searchExamples').style.display = 'none';
-                return false;
-            }
-            
-            // Configurazione trovata
-            YOUTUBE_API_KEY = savedApiKey;
-            document.getElementById('configWarning').style.display = 'none';
-            document.getElementById('searchExamples').style.display = 'block';
-            return true;
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 4000);
         }
 
-        function goToConfig() {
-            window.location.href = './config.html';
-        }
-
-        function searchVideos() {
-            if (!checkConfiguration()) {
-                alert('Per favore configura prima la YouTube API Key');
-                goToConfig();
+        function saveApiKey() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            
+            if (!apiKey) {
+                showMessage('⚠️ Inserisci una API Key valida', 'error');
                 return;
             }
 
-            const query = document.getElementById('searchInput').value.trim();
-            if (!query) return;
+            // Validazione base formato API key
+            if (!apiKey.startsWith('AIza') || apiKey.length < 30) {
+                showMessage('⚠️ La API Key non sembra valida. Controlla il formato.', 'error');
+                return;
+            }
 
-            // Il resto del codice di ricerca rimane uguale al tuo originale
-            // Ma ora usa YOUTUBE_API_KEY dalla configurazione
-            console.log('Searching with API key:', YOUTUBE_API_KEY ? 'Found' : 'Not found');
+            // Salva nel localStorage
+            localStorage.setItem('bigbuttonplay_api_key', apiKey);
+            localStorage.setItem('bigbuttonplay_config_date', new Date().toISOString());
             
-            // ... resto della logica di ricerca ...
+            showMessage('✅ Configurazione salvata! Ora puoi usare BigButtonPlay.', 'success');
+            
+            // Mostra il pulsante per andare all'app
+            document.getElementById('goButton').style.display = 'inline-block';
+            
+            // Dopo 2 secondi mostra la vista successo
+            setTimeout(() => {
+                document.getElementById('configForm').style.display = 'none';
+                document.getElementById('successView').style.display = 'block';
+            }, 2000);
         }
 
-        // Event listener per Enter
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        function testAndGo() {
+            openBigButtonPlay();
+        }
+
+        function openBigButtonPlay() {
+            // Reindirizza alla pagina principale (selezione lingua)
+            window.location.href = './index.html';
+        }
+
+        function editConfig() {
+            document.getElementById('successView').style.display = 'none';
+            document.getElementById('configForm').style.display = 'block';
+            
+            // Pre-compila con la chiave esistente
+            const savedApiKey = localStorage.getItem('bigbuttonplay_api_key');
+            if (savedApiKey) {
+                document.getElementById('apiKey').value = savedApiKey;
+            }
+        }
+
+        function goToHome() {
+            window.location.href = './index.html';
+        }
+
+        // Gestione Enter per salvare
+        document.getElementById('apiKey').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                searchVideos();
+                saveApiKey();
             }
         });
     </script>
