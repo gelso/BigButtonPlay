@@ -25,24 +25,13 @@ This is an **open-source, non-profit project** created to help bridge the digita
 
 ### Quick Start
 1. **Visit:** [bigbuttonplay.com](https://bigbuttonplay.com) 
-2. **Configure:** Set up your YouTube API key (one-time setup)
+2. **Configure:** Set up your YouTube API key (one-time setup, see below)
 3. **Choose:** Select your preferred language
 4. **Enjoy:** Simple YouTube experience with big, clear buttons!
 
-### Installation Options
-
-**🌐 Web App (Recommended)**
-- Access directly from any device browser
-- Automatic updates
-- Works on PC, tablet, and mobile
-- Can be installed as PWA (Progressive Web App)
-
-**💻 Local Installation (Advanced Users)**
-- Download repository files
-- Open HTML files directly in browser
-- Same setup process applies
-
-*Languages available: 🇺🇸 English • 🇮🇹 Italian • 🇪🇸 Spanish • 🇫🇷 French • 🇧🇷 Portuguese • 🇩🇪 German • 🇷🇺 Russian • 🇨🇳 Chinese • 🇸🇦 Arabic*
+*Note: More languages coming soon! Currently available: 
+UN Official Languages: English (eng.html), Spanish (esp.html), Chinese (chn.html), French (fra.html), Russian (rus.html), Arabic (ara.html) 
+plus additional major languages: Italian (ita.html), Hindi (hin.html), Portuguese (por.html).*
 
 ---
 
@@ -50,9 +39,7 @@ This is an **open-source, non-profit project** created to help bridge the digita
 
 BigButtonPlay requires a **free YouTube API key** for operation. This is a **one-time setup** that enables the app to search YouTube videos.
 
-> **👥 Setup Helper:** This technical setup should be done by someone comfortable with technology (family member, friend, or tech-savvy person). Once configured, the app becomes completely simple for everyone to use.
-
-### Process Overview
+### Process Overview (details below)
 
 ```mermaid
 flowchart TD
@@ -108,7 +95,7 @@ flowchart TD
 
 ### Step 6: Configure BigButtonPlay
 1. **Copy** your API key from Google Cloud
-2. **Return** to BigButtonPlay configuration page
+2. **Return** to BigButtonPlay, open the configuration page
 3. **Paste** the API key in the form
 4. Click **"Save Configuration"**
 5. **Success!** You're ready to use BigButtonPlay
@@ -116,7 +103,7 @@ flowchart TD
 ### Step 7: Start Using
 1. **Choose your language** from the main page
 2. **Search for videos** using simple, large buttons
-3. **Enjoy** a clutter-free YouTube experience!
+3. **Enjoy**
 
 ---
 
@@ -137,7 +124,13 @@ flowchart TD
 - **"Setup process too complex"**: I know the API key configuration can be challenging for non-technical users. Please help improve by sharing your suggestions in the [Issues](https://github.com/gelso/BigButtonPlay/issues) section!
 
 ## Support
-If you need help, create an issue in this repository.
+If you need help, create an issue in the [Issues](https://github.com/gelso/BigButtonPlay/issues) section!
+
+---
+
+Happy YouTubing! 🎬
+
+---
 
 ## 📄 License
 
@@ -167,4 +160,3 @@ See the [LICENSE](LICENSE) file for complete terms.
 
 ---
 
-Happy YouTubing! 🎬
