@@ -20,97 +20,115 @@ This is an **open-source, non-profit project** created to help bridge the digita
 **Important Note:** To use Google's free YouTube API, a one-time technical setup is required. This configuration step needs to be completed by someone with basic technical knowledge (a family member, friend, or tech-savvy person). A Gmail account is needed to obtain a free YouTube API key. Once configured, the tool becomes completely simple to use for everyone.
 
 ## How to Use
-1. Download all files from this repository to your computer
-2. Follow the setup instructions below to get your YouTube API key
-3. Configure your API key in the `config.js` file
-4. Open `ita.html` (or your preferred language version) and you're ready to go!
 
-*Note: More languages coming soon! Currently available: UN Official Languages: English (eng.html), Spanish (esp.html), Chinese (chn.html), French (fra.html), Russian (rus.html), Arabic (ara.html) plus additional major languages: Italian (ita.html), Hindi (hin.html), Portuguese (por.html).*
+**BigButtonPlay is now available as a web application! No downloads required.**
+
+### Quick Start
+1. **Visit:** [bigbuttonplay.com](https://bigbuttonplay.com) 
+2. **Configure:** Set up your YouTube API key (one-time setup)
+3. **Choose:** Select your preferred language
+4. **Enjoy:** Simple YouTube experience with big, clear buttons!
+
+### Installation Options
+
+**🌐 Web App (Recommended)**
+- Access directly from any device browser
+- Automatic updates
+- Works on PC, tablet, and mobile
+- Can be installed as PWA (Progressive Web App)
+
+**💻 Local Installation (Advanced Users)**
+- Download repository files
+- Open HTML files directly in browser
+- Same setup process applies
+
+*Languages available: 🇺🇸 English • 🇮🇹 Italian • 🇪🇸 Spanish • 🇫🇷 French • 🇧🇷 Portuguese • 🇩🇪 German • 🇷🇺 Russian • 🇨🇳 Chinese • 🇸🇦 Arabic*
+
+---
 
 ## Setup Instructions
 
-To use BigButtonPlay, you need to get a YouTube API key from Google Cloud Console. Follow these steps:
+BigButtonPlay requires a **free YouTube API key** for operation. This is a **one-time setup** that enables the app to search YouTube videos.
 
-### Process Overview (details below)
+> **👥 Setup Helper:** This technical setup should be done by someone comfortable with technology (family member, friend, or tech-savvy person). Once configured, the app becomes completely simple for everyone to use.
+
+### Process Overview
 
 ```mermaid
 flowchart TD
-    A[Start] --> B["Access Google Cloud Console (console.cloud.google.com)"]
-    B --> C{Have a Project?}
-    C -->|No| D["Create New Project (Select project → New Project)"]
-    C -->|Yes| E["Navigate to APIs & Services → Library"]
-    D --> E
-    E --> F["Search and Enable YouTube Data API v3"]
-    F --> G["Go to APIs & Services → Credentials"]
-    G --> H["Create Credentials → API Key"]
-    H --> I["Click Restrict Key (Security Step)"]
-    I --> J["Set API restrictions to YouTube Data API v3 only"]
-    J --> K["Save API Key Settings"]
-    K --> L["Copy Your API Key"]
-    L --> M["Rename config file to config.js"]
-    M --> N["Open config.js in BigButtonPlay folder"]
-    N --> O["Replace 'your-youtube-api-key-here' with actual key"]
-    O --> P["Save config.js"]
-    P --> Q["Open ita.html (or your language version) in browser"]
-    Q --> R[Ready to Use BigButtonPlay! 🎯]
+    A[Start] --> B["Go to bigbuttonplay.com"]
+    B --> C["Click 'Setup YouTube API Key'"]
+    C --> D["Access Google Cloud Console"]
+    D --> E{Have Google Project?}
+    E -->|No| F["Create New Project"]
+    E -->|Yes| G["Enable YouTube Data API v3"]
+    F --> G
+    G --> H["Create API Key"]
+    H --> I["Restrict Key (Security)"]
+    I --> J["Copy API Key"]
+    J --> K["Paste in BigButtonPlay Config"]
+    K --> L["Save Configuration"]
+    L --> M["Choose Language"]
+    M --> N[Ready to Use! 🎯]
     
     style A fill:#e1f5fe
-    style P fill:#c8e6c9
+    style L fill:#c8e6c9
     style I fill:#fff3e0
-    style J fill:#fff3e0
 ```
 
-### Step 1: Access Google Cloud Console
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Sign in with your Google account
-3. If you don't have a project yet, create a new one by clicking "Select a project" → "New Project"
-4. Give your project a name and click "Create"
+### Step 1: Access Configuration
+1. Go to **[bigbuttonplay.com](https://bigbuttonplay.com)**
+2. Click **"Setup YouTube API Key"**
+3. This will open the configuration page
 
-### Step 2: Enable YouTube Data API v3
-1. In the left sidebar, click on "APIs & Services" → "Library"
-2. Search for "YouTube Data API v3"
-3. Click on "YouTube Data API v3" from the results
-4. Click the "Enable" button
+### Step 2: Get Your YouTube API Key
+1. Click the link to **[Google Cloud Console](https://console.cloud.google.com/)**
+2. **Sign in** with your Google account
+3. **Create a project** (if you don't have one):
+   - Click "Select a project" → "New Project"
+   - Give it a name like "BigButtonPlay"
+   - Click "Create"
 
-### Step 3: Create an API Key
-1. In the left sidebar, click on "APIs & Services" → "Credentials"
-2. Click the "Create Credentials" button at the top
-3. Select "API Key" from the dropdown menu
-4. Your API key will be generated and displayed
+### Step 3: Enable YouTube API
+1. In the left sidebar: **"APIs & Services"** → **"Library"**
+2. Search for **"YouTube Data API v3"**
+3. Click on it and press **"Enable"**
 
-### Step 4: Restrict Your API Key (Important for Security)
-1. After creating the API key, click on the "Restrict Key" button (or click on the key name to edit it)
-2. Under "API restrictions":
+### Step 4: Create API Key
+1. Go to **"APIs & Services"** → **"Credentials"**
+2. Click **"Create Credentials"** → **"API Key"**
+3. Your API key will be generated
+
+### Step 5: Secure Your API Key
+1. Click **"Restrict Key"** (important for security)
+2. Under **"API restrictions"**:
    - Select "Restrict key"
-   - Check only "YouTube Data API v3" from the list
-3. Click "Save"
+   - Check **only** "YouTube Data API v3"
+3. Click **"Save"**
 
-### Step 5: Configure BigButtonPlay
-1. In your local BigButtonPlay folder, rename the configuration file to `config.js`
-2. Open the `config.js` file
-2. Find this section:
-```javascript
-const CONFIG = {
-    YOUTUBE_API_KEY: 'your-youtube-api-key-here',
-    YOUTUBE_API_URL: 'https://www.googleapis.com/youtube/v3/search'
-};
-```
-3. Replace `'your-youtube-api-key-here'` with your actual API key (keep the quotes)
-4. Save the file
+### Step 6: Configure BigButtonPlay
+1. **Copy** your API key from Google Cloud
+2. **Return** to BigButtonPlay configuration page
+3. **Paste** the API key in the form
+4. Click **"Save Configuration"**
+5. **Success!** You're ready to use BigButtonPlay
 
-### Example
-Your `config.js` should look like this:
-```javascript
-const CONFIG = {
-    YOUTUBE_API_KEY: 'AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-    YOUTUBE_API_URL: 'https://www.googleapis.com/youtube/v3/search'
-};
-```
+### Step 7: Start Using
+1. **Choose your language** from the main page
+2. **Search for videos** using simple, large buttons
+3. **Enjoy** a clutter-free YouTube experience!
+
+---
 
 ## Important Notes
-- Keep your API key private and never share it publicly
-- The API key has usage limits - check your quota in Google Cloud Console
-- If you encounter issues, make sure the YouTube Data API v3 is enabled for your project
+
+- ⚠️ **Setup requirement:** A Gmail account is needed to obtain the free YouTube API key
+- 🔒 **Privacy:** Your API key is stored only in your browser (never on our servers)
+- 💰 **Cost:** YouTube API is completely free for normal usage
+- 👨‍👩‍👧‍👦 **Family setup:** One person does the technical setup, everyone enjoys the simple interface
+- 📱 **Cross-device:** Works on computers, tablets, and smartphones
+
+---
 
 ## Troubleshooting
 - **"API key not valid"**: Check that you copied the key correctly and that YouTube Data API v3 is enabled
@@ -119,7 +137,7 @@ const CONFIG = {
 - **"Setup process too complex"**: I know the API key configuration can be challenging for non-technical users. Please help improve by sharing your suggestions in the [Issues](https://github.com/gelso/BigButtonPlay/issues) section!
 
 ## Support
-If you need help, check the [YouTube Data API documentation](https://developers.google.com/youtube/v3) or create an issue in this repository.
+If you need help, create an issue in this repository.
 
 ## 📄 License
 
