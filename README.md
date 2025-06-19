@@ -1,5 +1,9 @@
 # BigButtonPlay
 
+![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)
+![Non-Commercial](https://img.shields.io/badge/Commercial%20Use-Prohibited-red)
+![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red)
+
 A simple, senior-friendly client-side tool to interact with YouTube's API. 
 
 **Designed specifically for older adults and users who are not comfortable with technology.** BigButtonPlay features only 2-3 large, clearly visible buttons to make using YouTube as simple as possible.
@@ -116,6 +120,34 @@ const CONFIG = {
 
 ## Support
 If you need help, check the [YouTube Data API documentation](https://developers.google.com/youtube/v3) or create an issue in this repository.
+
+## 📄 License
+
+This project is licensed under **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International** (CC BY-NC-SA 4.0).
+
+### 🚫 Non-Commercial License
+
+**You MAY:**
+- ✅ Use BigButtonPlay for personal purposes
+- ✅ Use in educational settings
+- ✅ Use in non-profit organizations  
+- ✅ Modify and improve the code
+- ✅ Share with others (under same license)
+
+**You MAY NOT:**
+- ❌ Use for any commercial purposes
+- ❌ Add advertising or monetization
+- ❌ Sell or license to third parties
+- ❌ Integrate into commercial products
+- ❌ Generate revenue from this software
+
+### Why Non-Commercial?
+
+BigButtonPlay was created specifically to **bridge the digital divide** and make technology accessible to seniors and people with difficulties. It's a **social mission project**, not a commercial product.
+
+<!-- **Commercial licensing:** For commercial use cases, please [contact us](mailto:your-email@example.com) to discuss licensing options. -->
+
+See the [LICENSE](LICENSE) file for complete terms.
 
 ---
 
