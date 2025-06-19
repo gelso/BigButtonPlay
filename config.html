@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigButtonPlay - Configurazione</title>
+    <title>BigButtonPlay - Configuration</title>
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -183,7 +183,7 @@
 <body>
     <div class="config-container">
         <h1 class="logo">BigButtonPlay</h1>
-        <p class="subtitle">Configurazione YouTube API</p>
+        <p class="subtitle">YouTube API Configuration</p>
 
         <div id="configForm">
             <div class="config-section">
@@ -191,58 +191,58 @@
                 <input type="text" 
                        id="apiKey" 
                        class="api-input" 
-                       placeholder="Inserisci la tua YouTube API Key..."
+                       placeholder="Enter your YouTube API Key..."
                        autocomplete="off">
             </div>
 
             <div class="status-message" id="statusMessage"></div>
 
             <button class="config-button" onclick="saveApiKey()">
-                💾 Salva Configurazione
+                💾 Save Configuration
             </button>
             
             <button class="config-button secondary" onclick="testAndGo()" id="goButton" style="display: none;">
-                ▶️ Apri BigButtonPlay
+                ▶️ Open BigButtonPlay
             </button>
 
-            <button class="config-button back" onclick="goToHome()">
-                🏠 Torna alla Home
-            </button>
+            <!-- <button class="config-button back" onclick="goToHome()">
+                🏠 Back to Home
+            </button> -->
         </div>
 
         <div id="successView" style="display: none;">
             <div class="status-message status-success">
-                ✅ Configurazione salvata con successo!
+                ✅ Configuration saved successfully!
             </div>
             
             <button class="config-button secondary" onclick="openBigButtonPlay()">
-                ▶️ Apri BigButtonPlay
+                ▶️ Open BigButtonPlay
             </button>
             
             <button class="config-button" onclick="editConfig()">
-                ⚙️ Modifica Configurazione
+                ⚙️ Edit Configuration
             </button>
 
-            <button class="config-button back" onclick="goToHome()">
-                🏠 Torna alla Home
-            </button>
+            <!-- <button class="config-button back" onclick="goToHome()">
+                🏠 Back to Home
+            </button> -->
         </div>
 
         <div class="help-section">
-            <div class="help-title">💡 Come ottenere la YouTube API Key:</div>
+            <div class="help-title">💡 How to get a YouTube API Key:</div>
             <div class="help-text">
-                1. Vai su <a href="https://console.cloud.google.com" target="_blank" class="help-link">Google Cloud Console</a><br>
-                2. Crea un nuovo progetto<br>
-                3. Abilita "YouTube Data API v3"<br>
-                4. Crea credenziali → API Key<br>
-                5. Copia e incolla la chiave qui sopra<br><br>
-                <strong>Serve aiuto?</strong> Leggi la <a href="https://github.com/gelso/BigButtonPlay#setup-instructions" target="_blank" class="help-link">guida completa</a>
+                1. Go to <a href="https://console.cloud.google.com" target="_blank" class="help-link">Google Cloud Console</a><br>
+                2. Create a new project<br>
+                3. Enable "YouTube Data API v3"<br>
+                4. Create credentials → API Key<br>
+                5. Copy and paste the key above<br><br>
+                <strong>Need help?</strong> Read the <a href="https://github.com/gelso/BigButtonPlay#setup-instructions" target="_blank" class="help-link">complete guide</a>
             </div>
         </div>
     </div>
 
     <script>
-        // Verifica se esiste già una configurazione
+        // Check if configuration already exists
         window.onload = function() {
             const savedApiKey = localStorage.getItem('bigbuttonplay_api_key');
             if (savedApiKey) {
@@ -266,26 +266,26 @@
             const apiKey = document.getElementById('apiKey').value.trim();
             
             if (!apiKey) {
-                showMessage('⚠️ Inserisci una API Key valida', 'error');
+                showMessage('⚠️ Please enter a valid API Key', 'error');
                 return;
             }
 
-            // Validazione base formato API key
+            // Basic API key format validation
             if (!apiKey.startsWith('AIza') || apiKey.length < 30) {
-                showMessage('⚠️ La API Key non sembra valida. Controlla il formato.', 'error');
+                showMessage('⚠️ The API Key doesn\'t seem valid. Please check the format.', 'error');
                 return;
             }
 
-            // Salva nel localStorage
+            // Save to localStorage
             localStorage.setItem('bigbuttonplay_api_key', apiKey);
             localStorage.setItem('bigbuttonplay_config_date', new Date().toISOString());
             
-            showMessage('✅ Configurazione salvata! Ora puoi usare BigButtonPlay.', 'success');
+            showMessage('✅ Configuration saved! You can now use BigButtonPlay.', 'success');
             
-            // Mostra il pulsante per andare all'app
+            // Show the button to go to the app
             document.getElementById('goButton').style.display = 'inline-block';
             
-            // Dopo 2 secondi mostra la vista successo
+            // After 2 seconds show success view
             setTimeout(() => {
                 document.getElementById('configForm').style.display = 'none';
                 document.getElementById('successView').style.display = 'block';
@@ -297,7 +297,7 @@
         }
 
         function openBigButtonPlay() {
-            // Reindirizza alla pagina principale (selezione lingua)
+            // Redirect to main page (language selection)
             window.location.href = './index.html';
         }
 
@@ -305,7 +305,7 @@
             document.getElementById('successView').style.display = 'none';
             document.getElementById('configForm').style.display = 'block';
             
-            // Pre-compila con la chiave esistente
+            // Pre-fill with existing key
             const savedApiKey = localStorage.getItem('bigbuttonplay_api_key');
             if (savedApiKey) {
                 document.getElementById('apiKey').value = savedApiKey;
@@ -316,7 +316,7 @@
             window.location.href = './index.html';
         }
 
-        // Gestione Enter per salvare
+        // Handle Enter key to save
         document.getElementById('apiKey').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 saveApiKey();
