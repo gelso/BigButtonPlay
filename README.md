@@ -17,7 +17,8 @@ A simple, senior-friendly client-side tool to interact with YouTube's API.
 
 This is an **open-source, non-profit project** created to help bridge the digital divide and make technology more accessible to more people.
 
-**Important Note:** To use Google's free YouTube API, a one-time technical setup is required. This configuration step needs to be completed by someone with basic technical knowledge (a family member, friend, or tech-savvy person). A Gmail account is needed to obtain a free YouTube API key. Once configured, the tool becomes completely simple to use for everyone.
+Important Note: To use Google's free YouTube API, a one-time technical setup is required. This configuration step needs to be completed by someone with basic technical knowledge (a family member, friend, or tech-savvy person). A Gmail account is needed to obtain a free YouTube API key, which must then be copied into the website's configuration page (currently available in English only). Once configured, the tool becomes completely simple to use for everyone.
+
 
 ## How to Use
 
@@ -29,7 +30,7 @@ This is an **open-source, non-profit project** created to help bridge the digita
 3. **Choose:** Select your preferred language
 4. **Enjoy:** Simple YouTube experience with big, clear buttons!
 
-*Note: More languages coming soon! Currently available: 
+*Note: More languages coming soon! Currently available:
 UN Official Languages: English (eng.html), Spanish (esp.html), Chinese (chn.html), French (fra.html), Russian (rus.html), Arabic (ara.html) 
 plus additional major languages: Italian (ita.html), Hindi (hin.html), Portuguese (por.html).*
 
