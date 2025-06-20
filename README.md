@@ -4,7 +4,7 @@
 ![Non-Commercial](https://img.shields.io/badge/Commercial%20Use-Prohibited-red)
 ![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red)
 
-A simple, senior-friendly client-side tool to interact with YouTube's API. 
+A simple, senior-friendly web application to interact with YouTube's API. 
 
 **Designed specifically for older adults and users who are not comfortable with technology.** BigButtonPlay features only 2-3 large, clearly visible buttons to make using YouTube as simple as possible.
 
@@ -17,7 +17,16 @@ A simple, senior-friendly client-side tool to interact with YouTube's API.
 
 This is an **open-source, non-profit project** created to help bridge the digital divide and make technology more accessible to more people.
 
-Important Note: To use Google's free YouTube API, a one-time technical setup is required. This configuration step needs to be completed by someone with basic technical knowledge (a family member, friend, or tech-savvy person). A Gmail account is needed to obtain a free YouTube API key, which must then be copied into the website's configuration page (currently available in English only). Once configured, the tool becomes completely simple to use for everyone.
+**🌐 Try it now:** [bigbuttonplay.com](https://bigbuttonplay.com)
+
+## 🔧 Important Setup Information
+
+**Before you start:** To use Google's free YouTube API, a one-time technical setup is required. This configuration step needs to be completed by someone with basic technical knowledge (a family member, friend, or tech-savvy person). A Gmail account is needed to obtain a free YouTube API key, which must then be copied into the website's configuration page (currently available in English only). Once configured, the tool becomes completely simple to use for everyone.
+
+- 📧 **Requirement:** Gmail account
+- ⏱️ **Time:** 5-10 minutes setup
+- 👥 **Who can help:** Family member or tech-savvy friend (one-time assistance)
+- 💰 **Cost:** Completely free
 
 
 ## How to Use
