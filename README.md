@@ -40,8 +40,8 @@ This is an **open-source, non-profit project** created to help bridge the digita
 4. **Enjoy:** Simple YouTube experience with big, clear buttons!
 
 *Note: More languages coming soon! Currently available:
-UN Official Languages: English (eng.html), Spanish (esp.html), Chinese (chn.html), French (fra.html), Russian (rus.html), Arabic (ara.html) 
-plus additional major languages: Italian (ita.html), German (deu.html), Hindi (hin.html), Portuguese (por.html).*
+UN Official Languages: English, Spanish, Chinese, French, Russian, Arabic 
+plus additional major languages: Italian, Hindi, Portuguese and German.*
 
 ---
 
