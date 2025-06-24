@@ -21,7 +21,7 @@ This is an **open-source, non-profit project** created to help bridge the digita
 
 ## 🔧 Important Setup Information
 
-**Before you start:** To use Google's free YouTube API, a one-time technical setup is required. This configuration step needs to be completed by someone with basic technical knowledge (a family member, friend, or tech-savvy person). A Gmail account is needed to obtain a free YouTube API key, which must then be copied into the website's configuration page. Once configured, the tool becomes completely simple to use for everyone.
+**Before you start:** To use Google's free YouTube API, a one-time technical setup is required. This configuration step needs to be completed by someone with basic technical knowledge (a family member, friend, or tech-savvy person). A Gmail account is needed to obtain a free YouTube API key, which must then be copied into the website's configuration page; your API key is stored only in your browser (never on our servers). Once configured, the tool becomes completely simple to use for everyone.
 
 - 📧 **Requirement:** Gmail account
 - ⏱️ **Time:** 5-10 minutes setup
