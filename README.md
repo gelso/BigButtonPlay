@@ -74,7 +74,7 @@ flowchart TD
     style F fill:#c8e6c9
 ```
 
-### Quick Start with Setup Wizard
+#### Quick Start with Setup Wizard - details
 
 1. **Visit:** [bigbuttonplay.com](https://bigbuttonplay.com) 
 2. **Click:** The red "⚙️ Setup YouTube API Key" button
