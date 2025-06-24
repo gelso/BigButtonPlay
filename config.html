@@ -3,14 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigButtonPlay - Configuration</title>
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#ff0000">
-    
+    <title>BigButtonPlay - Setup Wizard</title>
     <style>
         * {
             margin: 0;
@@ -20,9 +13,8 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: #333;
-            line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -31,13 +23,13 @@
             padding: 20px;
         }
 
-        .config-container {
-            max-width: 600px;
+        .wizard-container {
+            max-width: 800px;
             width: 100%;
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
             text-align: center;
         }
 
@@ -48,280 +40,383 @@
             margin-bottom: 20px;
         }
 
-        .subtitle {
-            font-size: 18px;
+        .wizard-title {
+            font-size: 24px;
             color: #666;
             margin-bottom: 30px;
         }
 
-        .config-section {
-            margin-bottom: 30px;
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .progress-step {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: #ff0000;
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: #28a745;
+            color: white;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 30px;
+            left: 60px;
+            right: 60px;
+            height: 4px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+        .progress-line-fill {
+            height: 100%;
+            background: #28a745;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .step-content {
+            display: none;
             text-align: left;
         }
 
-        .config-label {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
+        .step-content.active {
             display: block;
         }
 
-        .api-input {
+        .step-header {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .step-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .step-instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .step-instructions ol {
+            padding-left: 20px;
+        }
+
+        .step-instructions li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .action-button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .action-button:hover {
+            background-color: #cc0000;
+            color: white;
+            text-decoration: none;
+        }
+
+        .action-button.secondary {
+            background-color: #28a745;
+        }
+
+        .action-button.secondary:hover {
+            background-color: #218838;
+        }
+
+        .next-button {
+            background-color: #6c757d;
+            margin-top: 20px;
+        }
+
+        .next-button:hover {
+            background-color: #5a6268;
+        }
+
+        .api-key-input {
             width: 100%;
             padding: 15px;
             font-size: 16px;
             border: 2px solid #ddd;
             border-radius: 10px;
-            outline: none;
-            transition: border-color 0.3s;
+            margin-bottom: 20px;
         }
 
-        .api-input:focus {
-            border-color: #ff0000;
-        }
-
-        .config-button {
-            background-color: #ff0000;
-            color: white;
-            border: none;
-            padding: 18px 40px;
-            font-size: 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            margin: 10px;
-            transition: background-color 0.3s;
-            min-width: 200px;
-        }
-
-        .config-button:hover {
-            background-color: #cc0000;
-        }
-
-        .config-button.secondary {
-            background-color: #28a745;
-        }
-
-        .config-button.secondary:hover {
-            background-color: #218838;
-        }
-
-        .config-button.back {
-            background-color: #6c757d;
-        }
-
-        .config-button.back:hover {
-            background-color: #5a6268;
-        }
-
-        .status-message {
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-size: 16px;
-            display: none;
-        }
-
-        .status-success {
-            background-color: #d4edda;
+        .success-message {
+            background: #d4edda;
             color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .status-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .help-section {
-            background-color: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
-            margin-top: 20px;
-            text-align: left;
+            border: 1px solid #c3e6cb;
+            margin-bottom: 20px;
         }
 
-        .help-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .help-text {
-            color: #666;
-            line-height: 1.5;
-        }
-
-        .help-link {
-            color: #ff0000;
-            text-decoration: none;
-        }
-
-        .help-link:hover {
-            text-decoration: underline;
+        .warning-box {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ffeaa7;
+            margin-bottom: 20px;
         }
 
         @media (max-width: 768px) {
-            .config-container {
+            .wizard-container {
                 padding: 30px 20px;
             }
             
-            .logo {
-                font-size: 28px;
+            .progress-step {
+                width: 50px;
+                height: 50px;
+                font-size: 16px;
             }
             
-            .config-button {
-                font-size: 18px;
-                padding: 15px 30px;
-                min-width: 180px;
+            .action-button {
+                font-size: 16px;
+                padding: 12px 25px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="config-container">
+    <div class="wizard-container">
         <h1 class="logo">BigButtonPlay</h1>
-        <p class="subtitle">YouTube API Configuration</p>
-
-        <div id="configForm">
-            <div class="config-section">
-                <label for="apiKey" class="config-label">YouTube API Key:</label>
-                <input type="text" 
-                       id="apiKey" 
-                       class="api-input" 
-                       placeholder="Enter your YouTube API Key..."
-                       autocomplete="off">
+        <p class="wizard-title">Setup Wizard - Get Your YouTube API Key</p>
+        
+        <div class="progress-bar">
+            <div class="progress-line">
+                <div class="progress-line-fill" id="progressFill"></div>
             </div>
-
-            <div class="status-message" id="statusMessage"></div>
-
-            <button class="config-button" onclick="saveApiKey()">
-                💾 Save Configuration
-            </button>
-            
-            <button class="config-button secondary" onclick="testAndGo()" id="goButton" style="display: none;">
-                ▶️ Open BigButtonPlay
-            </button>
-
-            <!-- <button class="config-button back" onclick="goToHome()">
-                🏠 Back to Home
-            </button> -->
+            <div class="progress-step active" id="step1">1</div>
+            <div class="progress-step" id="step2">2</div>
+            <div class="progress-step" id="step3">3</div>
+            <div class="progress-step" id="step4">4</div>
         </div>
 
-        <div id="successView" style="display: none;">
-            <div class="status-message status-success">
-                ✅ Configuration saved successfully!
+        <!-- Step 1: Welcome -->
+        <div class="step-content active" id="content1">
+            <div class="step-header">🎯 Welcome to BigButtonPlay Setup</div>
+            <div class="step-description">
+                We'll help you get your YouTube API Key in just 4 simple steps. This setup is done once and takes about 5 minutes.
             </div>
-            
-            <button class="config-button secondary" onclick="openBigButtonPlay()">
-                ▶️ Open BigButtonPlay
+            <div class="warning-box">
+                <strong>Important:</strong> You'll need a Gmail account for this setup. If you don't have one, 
+                <a href="https://accounts.google.com/signup" target="_blank">create one here first</a>.
+            </div>
+            <button class="action-button next-button" onclick="nextStep()">
+                ▶️ Let's Get Started
             </button>
-            
-            <button class="config-button" onclick="editConfig()">
-                ⚙️ Edit Configuration
-            </button>
-
-            <!-- <button class="config-button back" onclick="goToHome()">
-                🏠 Back to Home
-            </button> -->
         </div>
 
-        <div class="help-section">
-            <div class="help-title">💡 How to get a YouTube API Key:</div>
-            <div class="help-text">
-                1. Go to <a href="https://console.cloud.google.com" target="_blank" class="help-link">Google Cloud Console</a><br>
-                2. Create a new project<br>
-                3. Enable "YouTube Data API v3"<br>
-                4. Create credentials → API Key<br>
-                5. Copy and paste the key above<br><br>
-                <strong>Need help?</strong> Read the <a href="https://github.com/gelso/BigButtonPlay#setup-instructions" target="_blank" class="help-link">complete guide</a>
+        <!-- Step 2: Create Project -->
+        <div class="step-content" id="content2">
+            <div class="step-header">🏗️ Step 1: Create Google Cloud Project</div>
+            <div class="step-description">
+                First, we need to create a project in Google Cloud Console. Don't worry - it's free!
             </div>
+            <div class="step-instructions">
+                <ol>
+                    <li>Click the button below to open Google Cloud Console</li>
+                    <li>Sign in with your Gmail account</li>
+                    <li>Click "CREATE PROJECT"</li>
+                    <li>Name your project: <strong>"BigButtonPlay-YourName"</strong></li>
+                    <li>Click "CREATE"</li>
+                    <li>Wait for the project to be created (about 30 seconds)</li>
+                </ol>
+            </div>
+            <a href="https://console.cloud.google.com/projectcreate" target="_blank" class="action-button">
+                🚀 Open Google Cloud Console
+            </a>
+            <button class="action-button next-button" onclick="nextStep()">
+                ✅ Project Created, Next Step
+            </button>
+        </div>
+
+        <!-- Step 3: Enable API -->
+        <div class="step-content" id="content3">
+            <div class="step-header">🔌 Step 2: Enable YouTube API</div>
+            <div class="step-description">
+                Now we need to enable the YouTube Data API for your project.
+            </div>
+            <div class="step-instructions">
+                <ol>
+                    <li>Click the button below to open YouTube API page</li>
+                    <li>Make sure your project (BigButtonPlay-YourName) is selected at the top</li>
+                    <li>Click the big blue "ENABLE" button</li>
+                    <li>Wait for the API to be enabled</li>
+                </ol>
+            </div>
+            <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" class="action-button">
+                📺 Enable YouTube API
+            </a>
+            <button class="action-button next-button" onclick="nextStep()">
+                ✅ API Enabled, Next Step
+            </button>
+        </div>
+
+        <!-- Step 4: Create API Key -->
+        <div class="step-content" id="content4">
+            <div class="step-header">🔑 Step 3: Create Your API Key</div>
+            <div class="step-description">
+                Finally, let's create your personal API Key that BigButtonPlay will use.
+            </div>
+            <div class="step-instructions">
+                <ol>
+                    <li>Click the button below to open Credentials page</li>
+                    <li>Click "+ CREATE CREDENTIALS"</li>
+                    <li>Select "API key" from the dropdown</li>
+                    <li>Copy the API key that appears</li>
+                    <li>Click "RESTRICT KEY" and select "YouTube Data API v3"</li>
+                    <li>Click "SAVE"</li>
+                    <li>Paste your API key in the box below</li>
+                </ol>
+            </div>
+            <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="action-button">
+                🔑 Create API Key
+            </a>
+            <div style="margin-top: 20px;">
+                <input type="text" class="api-key-input" id="apiKeyInput" placeholder="Paste your API Key here...">
+                <button class="action-button secondary" onclick="testApiKey()">
+                    🧪 Test & Save API Key
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 5: Success -->
+        <div class="step-content" id="content5">
+            <div class="step-header">🎉 Setup Complete!</div>
+            <div class="success-message">
+                Congratulations! Your BigButtonPlay is now configured and ready to use.
+            </div>
+            <div class="step-description">
+                Your API key has been saved securely in your browser. You can now enjoy simplified YouTube browsing!
+            </div>
+            <a href="./index.html" class="action-button">
+                🎬 Start Using BigButtonPlay
+            </a>
         </div>
     </div>
 
     <script>
-        // Check if configuration already exists
-        window.onload = function() {
-            const savedApiKey = localStorage.getItem('bigbuttonplay_api_key');
-            if (savedApiKey) {
-                document.getElementById('configForm').style.display = 'none';
-                document.getElementById('successView').style.display = 'block';
-            }
-        };
+        let currentStep = 1;
+        const totalSteps = 4;
 
-        function showMessage(message, type) {
-            const messageDiv = document.getElementById('statusMessage');
-            messageDiv.textContent = message;
-            messageDiv.className = `status-message status-${type}`;
-            messageDiv.style.display = 'block';
-            
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 4000);
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                // Hide current step
+                document.getElementById('content' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.getElementById('step' + currentStep).classList.add('completed');
+                
+                // Show next step
+                currentStep++;
+                document.getElementById('content' + currentStep).classList.add('active');
+                document.getElementById('step' + currentStep).classList.add('active');
+                
+                // Update progress bar
+                updateProgressBar();
+            }
         }
 
-        function saveApiKey() {
-            const apiKey = document.getElementById('apiKey').value.trim();
+        function updateProgressBar() {
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressFill').style.width = progressPercentage + '%';
+        }
+
+        function testApiKey() {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
             
             if (!apiKey) {
-                showMessage('⚠️ Please enter a valid API Key', 'error');
+                alert('Please enter your API key first');
                 return;
             }
 
-            // Basic API key format validation
             if (!apiKey.startsWith('AIza') || apiKey.length < 30) {
-                showMessage('⚠️ The API Key doesn\'t seem valid. Please check the format.', 'error');
+                alert('This doesn\'t look like a valid API key. Please check and try again.');
                 return;
             }
 
             // Save to localStorage
             localStorage.setItem('bigbuttonplay_api_key', apiKey);
             localStorage.setItem('bigbuttonplay_config_date', new Date().toISOString());
-            
-            showMessage('✅ Configuration saved! You can now use BigButtonPlay.', 'success');
-            
-            // Show the button to go to the app
-            document.getElementById('goButton').style.display = 'inline-block';
-            
-            // After 2 seconds show success view
-            setTimeout(() => {
-                document.getElementById('configForm').style.display = 'none';
-                document.getElementById('successView').style.display = 'block';
-            }, 2000);
+
+            // Test the API key with a simple request
+            fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=test&type=video&maxResults=1&key=${apiKey}`)
+                .then(response => {
+                    if (response.ok) {
+                        // API key works, show success
+                        document.getElementById('content4').classList.remove('active');
+                        document.getElementById('step4').classList.remove('active');
+                        document.getElementById('step4').classList.add('completed');
+                        
+                        document.getElementById('content5').classList.add('active');
+                        updateProgressBar();
+                    } else {
+                        throw new Error('API key test failed');
+                    }
+                })
+                .catch(error => {
+                    alert('API key test failed. Please check that you:\n1. Enabled YouTube Data API v3\n2. Created the API key correctly\n3. Applied restrictions to YouTube Data API v3 only');
+                });
         }
 
-        function testAndGo() {
-            openBigButtonPlay();
-        }
-
-        function openBigButtonPlay() {
-            // Redirect to main page (language selection)
-            window.location.href = './index.html';
-        }
-
-        function editConfig() {
-            document.getElementById('successView').style.display = 'none';
-            document.getElementById('configForm').style.display = 'block';
-            
-            // Pre-fill with existing key
-            const savedApiKey = localStorage.getItem('bigbuttonplay_api_key');
-            if (savedApiKey) {
-                document.getElementById('apiKey').value = savedApiKey;
+        // Check if already configured
+        window.onload = function() {
+            const existingKey = localStorage.getItem('bigbuttonplay_api_key');
+            if (existingKey) {
+                // Skip to success page
+                currentStep = 5;
+                document.getElementById('content1').classList.remove('active');
+                document.getElementById('content5').classList.add('active');
+                
+                // Mark all steps as completed
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById('step' + i).classList.add('completed');
+                    document.getElementById('step' + i).classList.remove('active');
+                }
+                
+                updateProgressBar();
             }
-        }
-
-        function goToHome() {
-            window.location.href = './index.html';
-        }
-
-        // Handle Enter key to save
-        document.getElementById('apiKey').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                saveApiKey();
-            }
-        });
+        };
     </script>
 </body>
 </html>
