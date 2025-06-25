@@ -115,11 +115,20 @@ If the wizard doesn't work or you prefer manual configuration, follow these deta
 5. Under "API restrictions": Select "Restrict key" and choose only "YouTube Data API v3"
 6. Click "SAVE"
 
+> **💡 Pro Tip:** Save this Credentials page link - it's YOUR personal API management area! You can return to your page anytime to:
+> - View your current API keys
+> - Delete old keys if needed  
+> - Create new keys for BigButtonPlay
+
 #### Step 4: Configure BigButtonPlay
-1. Return to [bigbuttonplay.com/config.html](https://bigbuttonplay.com/config.html)
-2. Paste your API key in the configuration form
-3. Click "Save Configuration"
-4. Choose your language and start using BigButtonPlay!
+1. Go to [bigbuttonplay.com/config.html](https://bigbuttonplay.com/config.html)
+2. Navigate through the wizard to reach the API key input:
+   - Click "Let's Get Started"
+   - Click "Project Created, Next Step" 
+   - Click "API Enabled, Next Step"
+3. Paste your API key in the input field
+4. Click "Test & Save API Key"
+5. Choose your language and start using BigButtonPlay!
 
 ---
 
