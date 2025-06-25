@@ -334,6 +334,16 @@
                 🎬 Start Using BigButtonPlay
             </a>
         </div>
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center;">
+        <button class="action-button" 
+                style="background-color: #6c757d; font-size: 14px; padding: 10px 20px;" 
+                onclick="resetConfiguration()">
+            🔄 Start Fresh Setup
+        </button>
+        <div style="font-size: 12px; color: #666; margin-top: 8px;">
+            Use this if you need to configure a different API key
+        </div>
+    </div>
     </div>
 
     <script>
@@ -374,6 +384,14 @@
             }
             
             document.getElementById('progressFill').style.width = progressPercentage + '%';
+        }
+        
+        function resetConfiguration() {
+            if (confirm('Are you sure? This will remove your current API key configuration.')) {
+                localStorage.removeItem('bigbuttonplay_api_key');
+                localStorage.removeItem('bigbuttonplay_config_date');
+                window.location.reload();
+            }
         }
 
         function testApiKey() {
