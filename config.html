@@ -357,8 +357,22 @@
             }
         }
 
+        // function updateProgressBar() {
+        //     const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+        //     document.getElementById('progressFill').style.width = progressPercentage + '%';
+        // }
+
         function updateProgressBar() {
-            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            let progressPercentage;
+            
+            // Gestisce il caso della pagina di successo (step 5)
+            if (currentStep >= 5) {
+                progressPercentage = 100;
+            } else {
+                // Calcolo normale per step 1-4, con sicurezza al 100%
+                progressPercentage = Math.min(((currentStep - 1) / (totalSteps - 1)) * 100, 100);
+            }
+            
             document.getElementById('progressFill').style.width = progressPercentage + '%';
         }
 
