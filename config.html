@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigButtonPlay - Setup Wizard</title>
+    <title>BigButtonPlay - Guided Setup</title>
     <style>
         * {
             margin: 0;
@@ -16,160 +16,277 @@
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: #333;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
         }
 
-        .wizard-container {
+        /* Main container remains visible but dimmed */
+        .main-container {
             max-width: 800px;
-            width: 100%;
+            margin: 0 auto;
+            transition: filter 0.3s ease;
+        }
+
+        .main-container.dimmed {
+            filter: blur(3px) brightness(0.7);
+            pointer-events: none;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Modal Content */
+        .modal-content {
             background: white;
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease;
         }
 
-        .logo {
-            font-size: 36px;
-            font-weight: bold;
-            color: #ff0000;
-            margin-bottom: 20px;
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .wizard-title {
-            font-size: 24px;
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .progress-bar {
+        /* Progress Breadcrumb */
+        .breadcrumb {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 40px;
-            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
         }
 
-        .progress-step {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #e9ecef;
+        .breadcrumb-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-            position: relative;
-            z-index: 2;
+            font-size: 14px;
+            color: #999;
             transition: all 0.3s ease;
         }
 
-        .progress-step.active {
-            background: #ff0000;
-            color: white;
+        .breadcrumb-item.active {
+            color: #ff0000;
+            font-weight: bold;
         }
 
-        .progress-step.completed {
-            background: #28a745;
-            color: white;
+        .breadcrumb-item.completed {
+            color: #28a745;
         }
 
-        .progress-line {
-            position: absolute;
-            top: 30px;
-            left: 60px;
-            right: 60px;
-            height: 4px;
-            background: #e9ecef;
-            z-index: 1;
-        }
-
-        .progress-line-fill {
-            height: 100%;
-            background: #28a745;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .step-content {
-            display: none;
-            text-align: left;
-        }
-
-        .step-content.active {
-            display: block;
-        }
-
-        .step-header {
+        .breadcrumb-item .icon {
             font-size: 20px;
+            margin-right: 8px;
+        }
+
+        /* Step Content */
+        .step-header {
+            font-size: 24px;
             font-weight: bold;
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
-        .step-description {
-            font-size: 16px;
-            color: #666;
-            line-height: 1.6;
+        .step-visual {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
             margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .step-visual img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .step-instructions {
-            background: #f8f9fa;
-            padding: 20px;
+            background: #e7f3ff;
+            border: 2px solid #b3d9ff;
             border-radius: 10px;
+            padding: 20px;
             margin-bottom: 20px;
+        }
+
+        .step-instructions h3 {
+            color: #004085;
+            margin-bottom: 15px;
         }
 
         .step-instructions ol {
             padding-left: 20px;
+            line-height: 1.8;
         }
 
         .step-instructions li {
             margin-bottom: 10px;
-            line-height: 1.5;
         }
 
-        .action-button {
-            background-color: #ff0000;
-            color: white;
-            border: none;
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
             padding: 15px 30px;
-            font-size: 18px;
+            font-size: 16px;
+            border: none;
             border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
             text-decoration: none;
-            display: inline-block;
-            margin: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .action-button:hover {
-            background-color: #cc0000;
+        .btn-primary {
+            background: #ff0000;
             color: white;
-            text-decoration: none;
         }
 
-        .action-button.secondary {
-            background-color: #28a745;
+        .btn-primary:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255,0,0,0.3);
         }
 
-        .action-button.secondary:hover {
-            background-color: #218838;
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
         }
 
-        .next-button {
-            background-color: #6c757d;
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        /* Timer Display */
+        .timer-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .timer-container.active {
+            display: block;
+        }
+
+        .timer-text {
+            font-size: 18px;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .timer-countdown {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff0000;
+        }
+
+        /* Clipboard Helper */
+        .clipboard-box {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clipboard-text {
+            font-family: monospace;
+            font-size: 16px;
+            color: #495057;
+        }
+
+        .clipboard-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .clipboard-btn:hover {
+            background: #138496;
+        }
+
+        .clipboard-btn.copied {
+            background: #28a745;
+        }
+
+        /* Mobile Detection Warning */
+        .mobile-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .mobile-warning.show {
+            display: block;
+        }
+
+        .mobile-warning h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        /* API Key Input */
+        .api-key-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
             margin-top: 20px;
-        }
-
-        .next-button:hover {
-            background-color: #5a6268;
         }
 
         .api-key-input {
@@ -177,286 +294,555 @@
             padding: 15px;
             font-size: 16px;
             border: 2px solid #ddd;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #c3e6cb;
-            margin-bottom: 20px;
-        }
-
-        .warning-box {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
             border-radius: 8px;
-            border: 1px solid #ffeaa7;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-family: monospace;
         }
 
+        .api-key-input:focus {
+            border-color: #ff0000;
+            outline: none;
+        }
+
+        /* Success Animation */
+        .success-animation {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #28a745;
+            animation: bounceIn 0.6s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .wizard-container {
+            .modal-content {
                 padding: 30px 20px;
             }
             
-            .progress-step {
-                width: 50px;
-                height: 50px;
-                font-size: 16px;
+            .breadcrumb {
+                flex-direction: column;
+                gap: 10px;
             }
             
-            .action-button {
-                font-size: 16px;
-                padding: 12px 25px;
+            .step-header {
+                font-size: 20px;
             }
+            
+            .timer-countdown {
+                font-size: 28px;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="wizard-container">
-        <h1 class="logo">BigButtonPlay</h1>
-        <p class="wizard-title">Setup Wizard - Get Your YouTube API Key</p>
-        
-        <div class="progress-bar">
-            <div class="progress-line">
-                <div class="progress-line-fill" id="progressFill"></div>
+    <!-- Main Container (gets dimmed during modal) -->
+    <div class="main-container" id="mainContainer">
+        <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); text-align: center;">
+            <h1 style="font-size: 48px; color: #ff0000; margin-bottom: 20px;">BigButtonPlay</h1>
+            <p style="font-size: 24px; color: #666; margin-bottom: 30px;">Let's set up your YouTube access!</p>
+            
+            <!-- Mobile Warning -->
+            <div class="mobile-warning" id="mobileWarning">
+                <h3>📱 Using a tablet or phone?</h3>
+                <p>For the best setup experience, we recommend using a computer. But don't worry - we'll guide you through it!</p>
             </div>
-            <div class="progress-step active" id="step1">1</div>
-            <div class="progress-step" id="step2">2</div>
-            <div class="progress-step" id="step3">3</div>
-            <div class="progress-step" id="step4">4</div>
-        </div>
-
-        <!-- Step 1: Welcome -->
-        <div class="step-content active" id="content1">
-            <div class="step-header">🎯 Welcome to BigButtonPlay Setup</div>
-            <div class="step-description">
-                We'll help you get your YouTube API Key in just 4 simple steps. This setup is done once and takes about 5 minutes.
-            </div>
-            <div class="warning-box">
-                <strong>Important:</strong> You'll need a Gmail account for this setup. If you don't have one, 
-                <a href="https://accounts.google.com/signup" target="_blank">create one here first</a>.
-            </div>
-            <button class="action-button next-button" onclick="nextStep()">
-                ▶️ Let's Get Started
+            
+            <button class="btn btn-primary" onclick="startGuidedSetup()" style="font-size: 20px; padding: 20px 40px;">
+                <span>🚀</span>
+                <span>Start Guided Setup</span>
             </button>
-        </div>
-
-        <!-- Step 2: Create Project -->
-        <div class="step-content" id="content2">
-            <div class="step-header">🏗️ Step 1: Create Google Cloud Project</div>
-            <div class="step-description">
-                First, we need to create a project in Google Cloud Console. Don't worry - it's free!
-            </div>
-            <div class="step-instructions">
-                <ol>
-                    <li>Click the button below to open Google Cloud Console</li>
-                    <li>Sign in with your Gmail account</li>
-                    <li>Click "CREATE PROJECT"</li>
-                    <li>Name your project: <strong>"BigButtonPlay-YourName"</strong></li>
-                    <li>Click "CREATE"</li>
-                    <li>Wait for the project to be created (about 30 seconds)</li>
-                </ol>
-            </div>
-            <a href="https://console.cloud.google.com/projectcreate" target="_blank" class="action-button">
-                🚀 Open Google Cloud Console
-            </a>
-            <button class="action-button next-button" onclick="nextStep()">
-                ✅ Project Created, Next Step
-            </button>
-        </div>
-
-        <!-- Step 3: Enable API -->
-        <div class="step-content" id="content3">
-            <div class="step-header">🔌 Step 2: Enable YouTube API</div>
-            <div class="step-description">
-                Now we need to enable the YouTube Data API for your project.
-            </div>
-            <div class="step-instructions">
-                <ol>
-                    <li>Click the button below to open YouTube API page</li>
-                    <li>Make sure your project (BigButtonPlay-YourName) is selected at the top</li>
-                    <li>Click the big blue "ENABLE" button</li>
-                    <li>Wait for the API to be enabled</li>
-                </ol>
-            </div>
-            <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" class="action-button">
-                📺 Enable YouTube API
-            </a>
-            <button class="action-button next-button" onclick="nextStep()">
-                ✅ API Enabled, Next Step
-            </button>
-        </div>
-
-        <!-- Step 4: Create API Key -->
-        <div class="step-content" id="content4">
-            <div class="step-header">🔑 Step 3: Create Your API Key</div>
-            <div class="step-description">
-                Finally, let's create your personal API Key that BigButtonPlay will use.
-            </div>
-            <div class="step-instructions">
-                <ol>
-                    <li>Click the button below to open Credentials page</li>
-                    <li>Click "+ CREATE CREDENTIALS"</li>
-                    <li>Select "API key" from the dropdown</li>
-                    <li>Copy the API key that appears</li>
-                    <li>Click "RESTRICT KEY" and select "YouTube Data API v3"</li>
-                    <li>Click "SAVE"</li>
-                    <li>Paste your API key in the box below</li>
-                </ol>
-            </div>
-            <div class="warning-box" style="background: #e7f3ff; border: 1px solid #b3d9ff; color: #004085;">
-                <strong>💡 Pro Tip:</strong> Save this Credentials page link - it's YOUR personal API management area! You can return to your page anytime to:
-                <ul style="margin: 10px 0 0 20px;">
-                    <li>View your current API keys</li>
-                    <li>Delete old keys if needed</li>
-                    <li>Create new keys for BigButtonPlay</li>
-                </ul>
-            </div>
-            <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="action-button">
-                🔑 Create API Key
-            </a>
-            <div style="margin-top: 20px;">
-                <input type="text" class="api-key-input" id="apiKeyInput" placeholder="Paste your API Key here...">
-                <button class="action-button secondary" onclick="testApiKey()">
-                    🧪 Test & Save API Key
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+                <p style="color: #666; margin-bottom: 10px;">Already have an API key?</p>
+                <button class="btn btn-secondary" onclick="showDirectInput()">
+                    Enter API Key Directly
                 </button>
             </div>
         </div>
-
-        <!-- Step 5: Success -->
-        <div class="step-content" id="content5">
-            <div class="step-header">🎉 Setup Complete!</div>
-            <div class="success-message">
-                Congratulations! Your BigButtonPlay is now configured and ready to use.
-            </div>
-            <div class="step-description">
-                Your API key has been saved securely in your browser. You can now enjoy simplified YouTube browsing!
-            </div>
-            <a href="./index.html" class="action-button">
-                🎬 Start Using BigButtonPlay
-            </a>
-        </div>
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center;">
-        <button class="action-button" 
-                style="background-color: #6c757d; font-size: 14px; padding: 10px 20px;" 
-                onclick="resetConfiguration()">
-            🔄 Start Fresh Setup
-        </button>
-        <div style="font-size: 12px; color: #666; margin-top: 8px;">
-            Use this to reset everything - for example, to configure a different API key
-        </div>
     </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <!-- Dynamic content will be inserted here -->
+        </div>
     </div>
 
     <script>
-        let currentStep = 1;
-        const totalSteps = 4;
+        // Configuration state
+        let currentStep = 0;
+        let setupState = {
+            projectCreated: false,
+            apiEnabled: false,
+            keyCreated: false,
+            apiKey: ''
+        };
 
-        function nextStep() {
-            if (currentStep < totalSteps) {
-                // Hide current step
-                document.getElementById('content' + currentStep).classList.remove('active');
-                document.getElementById('step' + currentStep).classList.remove('active');
-                document.getElementById('step' + currentStep).classList.add('completed');
-                
-                // Show next step
-                currentStep++;
-                document.getElementById('content' + currentStep).classList.add('active');
-                document.getElementById('step' + currentStep).classList.add('active');
-                
-                // Update progress bar
-                updateProgressBar();
+        // Device detection
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isTablet = /iPad|Android/i.test(navigator.userAgent) && window.innerWidth >= 768;
+
+        // Steps configuration
+        const steps = [
+            {
+                id: 'welcome',
+                title: '🎯 Welcome to Guided Setup',
+                content: generateWelcomeContent,
+                breadcrumb: 'Welcome'
+            },
+            {
+                id: 'project',
+                title: '🏗️ Create Google Project',
+                content: generateProjectContent,
+                breadcrumb: 'Create Project',
+                googleUrl: 'https://console.cloud.google.com/projectcreate'
+            },
+            {
+                id: 'api',
+                title: '🔌 Enable YouTube API',
+                content: generateApiContent,
+                breadcrumb: 'Enable API',
+                googleUrl: 'https://console.cloud.google.com/apis/library/youtube.googleapis.com'
+            },
+            {
+                id: 'key',
+                title: '🔑 Create API Key',
+                content: generateKeyContent,
+                breadcrumb: 'Get API Key',
+                googleUrl: 'https://console.cloud.google.com/apis/credentials'
+            },
+            {
+                id: 'success',
+                title: '🎉 Setup Complete!',
+                content: generateSuccessContent,
+                breadcrumb: 'Done!'
             }
-        }
+        ];
 
-        // function updateProgressBar() {
-        //     const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-        //     document.getElementById('progressFill').style.width = progressPercentage + '%';
-        // }
-
-        function updateProgressBar() {
-            let progressPercentage;
+        // Initialize
+        window.onload = function() {
+            if (isMobile || isTablet) {
+                document.getElementById('mobileWarning').classList.add('show');
+            }
             
-            // Gestisce il caso della pagina di successo (step 5)
-            if (currentStep >= 5) {
-                progressPercentage = 100;
-            } else {
-                // Calcolo normale per step 1-4, con sicurezza al 100%
-                progressPercentage = Math.min(((currentStep - 1) / (totalSteps - 1)) * 100, 100);
+            // Check if already configured
+            const existingKey = localStorage.getItem('bigbuttonplay_api_key');
+            if (existingKey) {
+                setupState.apiKey = existingKey;
+                currentStep = steps.length - 1;
             }
-            
-            document.getElementById('progressFill').style.width = progressPercentage + '%';
+        };
+
+        // Start guided setup
+        function startGuidedSetup() {
+            document.getElementById('mainContainer').classList.add('dimmed');
+            document.getElementById('modalOverlay').classList.add('active');
+            showStep(0);
         }
-        
-        function resetConfiguration() {
-            if (confirm('Are you sure? This will remove your current API key configuration.')) {
-                localStorage.removeItem('bigbuttonplay_api_key');
-                localStorage.removeItem('bigbuttonplay_config_date');
-                window.location.reload();
+
+        // Show specific step
+        function showStep(stepIndex) {
+            currentStep = stepIndex;
+            const step = steps[stepIndex];
+            const modalContent = document.querySelector('.modal-content');
+            
+            modalContent.innerHTML = `
+                ${generateBreadcrumb()}
+                <div class="step-header">${step.title}</div>
+                ${step.content()}
+            `;
+            
+            // Auto-scroll to top
+            modalContent.scrollTop = 0;
+        }
+
+        // Generate breadcrumb
+        function generateBreadcrumb() {
+            return `
+                <div class="breadcrumb">
+                    ${steps.map((step, index) => `
+                        <div class="breadcrumb-item ${index === currentStep ? 'active' : ''} ${index < currentStep ? 'completed' : ''}">
+                            <span class="icon">${index < currentStep ? '✅' : (index === currentStep ? '👉' : '⭕')}</span>
+                            <span>${step.breadcrumb}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Step content generators
+        function generateWelcomeContent() {
+            return `
+                <div class="step-instructions">
+                    <h3>What we'll do together:</h3>
+                    <ol>
+                        <li>Create a free Google Cloud project</li>
+                        <li>Enable YouTube access for your project</li>
+                        <li>Generate your personal API key</li>
+                        <li>Configure BigButtonPlay</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>Time needed:</strong> About 5 minutes</p>
+                    <p><strong>Requirements:</strong> A Gmail account</p>
+                </div>
+                
+                ${isMobile || isTablet ? `
+                    <div class="mobile-warning show">
+                        <h3>📱 Tablet/Phone Tip</h3>
+                        <p>When we open Google pages, they'll replace this screen. Use your browser's back button to return here!</p>
+                    </div>
+                ` : ''}
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="showStep(1)">
+                        Let's Begin →
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal()">
+                        Cancel
+                    </button>
+                </div>
+            `;
+        }
+
+        function generateProjectContent() {
+            return `
+                <div class="step-visual">
+                    <div style="font-size: 60px; margin-bottom: 20px;">🏗️</div>
+                    <p style="font-size: 18px; color: #666;">Time to create your Google Cloud project!</p>
+                </div>
+                
+                <div class="clipboard-box">
+                    <span class="clipboard-text">BigButtonPlay-${new Date().getFullYear()}</span>
+                    <button class="clipboard-btn" onclick="copyToClipboard('BigButtonPlay-${new Date().getFullYear()}', this)">
+                        📋 Copy Name
+                    </button>
+                </div>
+                
+                <div class="step-instructions">
+                    <h3>What to do:</h3>
+                    <ol>
+                        <li>Click the red button below to open Google Cloud</li>
+                        <li>Sign in with your Gmail account</li>
+                        <li>Click "CREATE PROJECT"</li>
+                        <li>Paste the project name from above</li>
+                        <li>Click "CREATE" and wait ~30 seconds</li>
+                        <li>Come back here and click "I Created the Project"</li>
+                    </ol>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="${steps[1].googleUrl}" target="_blank" class="btn btn-primary" onclick="startTimer()">
+                        🚀 Open Google Cloud
+                    </a>
+                </div>
+                
+                <div class="timer-container" id="timerContainer">
+                    <div class="timer-text">Creating project... come back in:</div>
+                    <div class="timer-countdown" id="countdown">2:00</div>
+                </div>
+                
+                <div class="action-buttons" style="margin-top: 20px;">
+                    <button class="btn btn-success" onclick="confirmStep('project')">
+                        ✅ I Created the Project
+                    </button>
+                    <button class="btn btn-secondary" onclick="showStep(0)">
+                        ← Back
+                    </button>
+                </div>
+                
+                <div class="error-message" id="errorMessage">
+                    Having trouble? Make sure you're signed into Gmail first!
+                </div>
+            `;
+        }
+
+        function generateApiContent() {
+            return `
+                <div class="step-visual">
+                    <div style="font-size: 60px; margin-bottom: 20px;">🔌</div>
+                    <p style="font-size: 18px; color: #666;">Now let's enable YouTube API!</p>
+                </div>
+                
+                <div class="step-instructions">
+                    <h3>What to do:</h3>
+                    <ol>
+                        <li>Click the red button below</li>
+                        <li>Make sure your project "BigButtonPlay-${new Date().getFullYear()}" is selected at the top</li>
+                        <li>Click the big blue "ENABLE" button</li>
+                        <li>Wait for it to finish</li>
+                        <li>Come back here</li>
+                    </ol>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="${steps[2].googleUrl}" target="_blank" class="btn btn-primary">
+                        📺 Enable YouTube API
+                    </a>
+                </div>
+                
+                <div class="action-buttons" style="margin-top: 30px;">
+                    <button class="btn btn-success" onclick="confirmStep('api')">
+                        ✅ I Enabled the API
+                    </button>
+                    <button class="btn btn-secondary" onclick="showStep(1)">
+                        ← Back
+                    </button>
+                </div>
+            `;
+        }
+
+        function generateKeyContent() {
+            return `
+                <div class="step-visual">
+                    <div style="font-size: 60px; margin-bottom: 20px;">🔑</div>
+                    <p style="font-size: 18px; color: #666;">Final step - let's get your API key!</p>
+                </div>
+                
+                <div class="step-instructions">
+                    <h3>What to do:</h3>
+                    <ol>
+                        <li>Click the red button below</li>
+                        <li>Click "+ CREATE CREDENTIALS"</li>
+                        <li>Choose "API key"</li>
+                        <li>Copy the key that appears</li>
+                        <li>Click "RESTRICT KEY"</li>
+                        <li>Under "API restrictions", select "Restrict key"</li>
+                        <li>Check only "YouTube Data API v3"</li>
+                        <li>Click "SAVE"</li>
+                        <li>Paste your key below</li>
+                    </ol>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="${steps[3].googleUrl}" target="_blank" class="btn btn-primary">
+                        🔑 Create API Key
+                    </a>
+                </div>
+                
+                <div class="api-key-section">
+                    <h3 style="margin-bottom: 15px;">Paste your API key here:</h3>
+                    <input type="text" 
+                           class="api-key-input" 
+                           id="apiKeyInput" 
+                           placeholder="AIza..." 
+                           autocomplete="off">
+                    <button class="btn btn-success" onclick="testAndSaveKey()" style="width: 100%;">
+                        <span id="testButtonText">🧪 Test & Save API Key</span>
+                        <span class="spinner" id="testSpinner" style="display: none;"></span>
+                    </button>
+                    <div class="error-message" id="keyError"></div>
+                </div>
+                
+                <div class="action-buttons" style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="showStep(2)">
+                        ← Back
+                    </button>
+                </div>
+            `;
+        }
+
+        function generateSuccessContent() {
+            return `
+                <div class="success-animation">
+                    <div class="success-icon">🎉</div>
+                    <h2 style="margin: 20px 0; color: #28a745;">Perfect! You're all set!</h2>
+                    <p style="font-size: 18px; color: #666; margin-bottom: 30px;">
+                        BigButtonPlay is now configured and ready to use.
+                    </p>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="./index.html" class="btn btn-primary" style="font-size: 18px; padding: 15px 40px;">
+                        🎬 Start Using BigButtonPlay
+                    </a>
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <button class="btn btn-secondary" onclick="resetAndStartOver()">
+                        🔄 Configure Different Key
+                    </button>
+                </div>
+            `;
+        }
+
+        // Helper functions
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.getElementById('mainContainer').classList.remove('dimmed');
+        }
+
+        function showDirectInput() {
+            currentStep = 3;
+            startGuidedSetup();
+        }
+
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '✅ Copied!';
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function startTimer() {
+            const timerContainer = document.getElementById('timerContainer');
+            const countdown = document.getElementById('countdown');
+            timerContainer.classList.add('active');
+            
+            let timeLeft = 120; // 2 minutes
+            const timer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                countdown.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    countdown.textContent = "Ready!";
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function confirmStep(stepType) {
+            if (stepType === 'project') {
+                setupState.projectCreated = true;
+                showStep(2);
+            } else if (stepType === 'api') {
+                setupState.apiEnabled = true;
+                showStep(3);
             }
         }
 
-        function testApiKey() {
+        function testAndSaveKey() {
             const apiKey = document.getElementById('apiKeyInput').value.trim();
+            const testButton = document.getElementById('testButtonText');
+            const spinner = document.getElementById('testSpinner');
+            const errorDiv = document.getElementById('keyError');
             
+            // Validation
             if (!apiKey) {
-                alert('Please enter your API key first');
+                errorDiv.textContent = 'Please enter your API key';
+                errorDiv.classList.add('show');
                 return;
             }
-
+            
             if (!apiKey.startsWith('AIza') || apiKey.length < 30) {
-                alert('This doesn\'t look like a valid API key. Please check and try again.');
+                errorDiv.textContent = 'This doesn\'t look like a valid API key. Make sure you copied it correctly.';
+                errorDiv.classList.add('show');
                 return;
             }
-
-            // Save to localStorage
-            localStorage.setItem('bigbuttonplay_api_key', apiKey);
-            localStorage.setItem('bigbuttonplay_config_date', new Date().toISOString());
-
-            // Test the API key with a simple request
+            
+            // Show loading state
+            testButton.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            errorDiv.classList.remove('show');
+            
+            // Test the API key
             fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=test&type=video&maxResults=1&key=${apiKey}`)
                 .then(response => {
                     if (response.ok) {
-                        // API key works, show success
-                        document.getElementById('content4').classList.remove('active');
-                        document.getElementById('step4').classList.remove('active');
-                        document.getElementById('step4').classList.add('completed');
+                        // Success! Save the key
+                        localStorage.setItem('bigbuttonplay_api_key', apiKey);
+                        localStorage.setItem('bigbuttonplay_config_date', new Date().toISOString());
+                        setupState.apiKey = apiKey;
+                        setupState.keyCreated = true;
                         
-                        document.getElementById('content5').classList.add('active');
-                        updateProgressBar();
+                        // Show success
+                        showStep(4);
                     } else {
-                        throw new Error('API key test failed');
+                        throw new Error('API test failed');
                     }
                 })
                 .catch(error => {
-                    alert('API key test failed. Please check that you:\n1. Enabled YouTube Data API v3\n2. Created the API key correctly\n3. Applied restrictions to YouTube Data API v3 only');
+                    errorDiv.innerHTML = `
+                        <strong>API key test failed.</strong><br>
+                        Please check that you:<br>
+                        1. Enabled YouTube Data API v3<br>
+                        2. Set restrictions to "YouTube Data API v3" only<br>
+                        3. Clicked "SAVE" after setting restrictions
+                    `;
+                    errorDiv.classList.add('show');
+                })
+                .finally(() => {
+                    testButton.style.display = 'inline';
+                    spinner.style.display = 'none';
                 });
         }
 
-        // Check if already configured
-        window.onload = function() {
-            const existingKey = localStorage.getItem('bigbuttonplay_api_key');
-            if (existingKey) {
-                // Skip to success page
-                currentStep = 5;
-                document.getElementById('content1').classList.remove('active');
-                document.getElementById('content5').classList.add('active');
-                
-                // Mark all steps as completed
-                for (let i = 1; i <= 4; i++) {
-                    document.getElementById('step' + i).classList.add('completed');
-                    document.getElementById('step' + i).classList.remove('active');
-                }
-                
-                updateProgressBar();
+        function resetAndStartOver() {
+            if (confirm('This will remove your current API key. Continue?')) {
+                localStorage.removeItem('bigbuttonplay_api_key');
+                localStorage.removeItem('bigbuttonplay_config_date');
+                setupState = {
+                    projectCreated: false,
+                    apiEnabled: false,
+                    keyCreated: false,
+                    apiKey: ''
+                };
+                currentStep = 0;
+                showStep(0);
             }
-        };
+        }
+
+        // Handle escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('modalOverlay').classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Handle back button (mobile)
+        window.addEventListener('popstate', function(e) {
+            if (document.getElementById('modalOverlay').classList.contains('active')) {
+                e.preventDefault();
+                if (currentStep > 0) {
+                    showStep(currentStep - 1);
+                } else {
+                    closeModal();
+                }
+            }
+        });
     </script>
 </body>
 </html>
