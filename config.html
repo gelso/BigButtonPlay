@@ -293,12 +293,12 @@
                     <li>Wait for the project to be created (usually takes 5-15 seconds), then come back here and click "Next Step"</li>
                 </ol>
             </div>
-            <!-- <a href="https://console.cloud.google.com/projectcreate" target="_blank" class="action-button" >
-                🚀 Open Google Cloud Console
-            </a> -->
-            <a href="#" onclick="openGoogleConsole()" class="action-button">
+            <a href="https://console.cloud.google.com/projectcreate" target="_blank" class="action-button" >
                 🚀 Open Google Cloud Console
             </a>
+            <!-- <a href="#" onclick="openGoogleConsole()" class="action-button">
+                🚀 Open Google Cloud Console
+            </a> -->
 
             <button class="action-button next-button" onclick="nextStep()">
                 ✅ Project Created, Next Step
@@ -319,13 +319,13 @@
                     <li>Wait for the API to be enabled (i.e., the page will be fully loaded), then come back here and click "Next Step"</li>
                 </ol>
             </div>
-            <!-- <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" class="action-button">
-                📺 Enable YouTube API
-            </a> -->
-            
-            <a href="#" onclick="openYouTubeAPI()" class="action-button">
+            <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" class="action-button">
                 📺 Enable YouTube API
             </a>
+            
+            <!-- <a href="#" onclick="openYouTubeAPI()" class="action-button">
+                📺 Enable YouTube API
+            </a> -->
             
             <button class="action-button next-button" onclick="nextStep()">
                 ✅ API Enabled, Next Step
@@ -356,13 +356,13 @@
                     <li>Create new keys for BigButtonPlay</li>
                 </ul>
             </div> -->
-            <!-- <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="action-button">
+            <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="action-button">
                 🔑 Create API Key
-            </a> -->
+            </a>
 
-            <button onclick="openCredentials()" class="action-button">
+            <!-- <button onclick="openCredentials()" class="action-button">
                 🔑 Create API Key
-            </button>
+            </button> -->
 
             <div style="margin-top: 20px;">
                 <!-- <input type="text" class="api-key-input" id="apiKeyInput" placeholder="Paste your API Key here...">
@@ -410,23 +410,23 @@
         const totalSteps = 4;
 
 
-        function openGoogleConsole() {
-            if (confirm("✅ Perfect! The Google page will open now.\n\n📱 After you complete the steps there, come back to this page to continue the setup clicking Next Step.\n\nReady to go?")) {
-                window.open('https://console.cloud.google.com/projectcreate', '_blank');
-            }
-        }
+        // function openGoogleConsole() {
+        //     if (confirm("✅ Perfect! The Google page will open now.\n\n📱 After you complete the steps there, come back to this page to continue the setup clicking Next Step.\n\nReady to go?")) {
+        //         window.open('https://console.cloud.google.com/projectcreate', '_blank');
+        //     }
+        // }
         
-        function openYouTubeAPI() {
-            if (confirm("Perfect! The YouTube API page will open now.\n\nOn the Google page, click the blue ENABLE button, then come back to this page to continue the setup clicking Next Step.\n\nReady to go?")) {
-                window.open('https://console.cloud.google.com/apis/library/youtube.googleapis.com', '_blank');
-            }
-        }
+        // function openYouTubeAPI() {
+        //     if (confirm("Perfect! The YouTube API page will open now.\n\nOn the Google page, click the blue ENABLE button, then come back to this page to continue the setup clicking Next Step.\n\nReady to go?")) {
+        //         window.open('https://console.cloud.google.com/apis/library/youtube.googleapis.com', '_blank');
+        //     }
+        // }
 
-        function openCredentials() {
-            if (confirm("Perfect! The Credentials page will open now.\n\nCreate your API key, copy it, restrict it to YouTube Data API v3, then come back to this page and paste it below.\n\nReady to go?")) {
-                window.open('https://console.cloud.google.com/apis/credentials', '_blank');
-            }
-        }        
+        // function openCredentials() {
+        //     if (confirm("Perfect! The Credentials page will open now.\n\nCreate your API key, copy it, restrict it to YouTube Data API v3, then come back to this page and paste it below.\n\nReady to go?")) {
+        //         window.open('https://console.cloud.google.com/apis/credentials', '_blank');
+        //     }
+        // }        
 
         function nextStep() {
             if (currentStep < totalSteps) {
