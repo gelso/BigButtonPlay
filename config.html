@@ -173,12 +173,26 @@
         }
 
         .api-key-input {
-            width: 100%;
+            width: 100%; /* Mantieni per compatibilità quando non è in flex */
+            flex: 1; /* Quando è dentro .api-key-section, prende spazio proporzionale */
+            min-width: 300px; /* Larghezza minima per leggibilità */
             padding: 15px;
             font-size: 16px;
             border: 2px solid #ddd;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 0; /* Cambiato da 20px a 0 per l'affiancamento */
+        }
+        .api-key-section {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .api-key-section .action-button {
+            margin: 0;
+            white-space: nowrap;
         }
 
         .success-message {
@@ -198,6 +212,12 @@
             border: 1px solid #ffeaa7;
             margin-bottom: 20px;
         }
+        
+        .action-instruction {
+            color: #cc0000;
+            font-weight: 600;
+            padding-left: 0;
+        }
 
         @media (max-width: 768px) {
             .wizard-container {
@@ -214,6 +234,17 @@
                 font-size: 16px;
                 padding: 12px 25px;
             }
+
+            .api-key-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .api-key-input {
+                min-width: auto;
+                margin-bottom: 15px;
+            }
+
         }
     </style>
 </head>
@@ -255,17 +286,20 @@
             </div>
             <div class="step-instructions">
                 <ol>
-                    <li>Click the button below to open Google Cloud Console</li>
-                    <li>Sign in with your Gmail account</li>
+                    <li class="action-instruction">Click the button below to open Google Cloud Console, then in the Google page that opens:</li>
                     <li>Click "CREATE PROJECT"</li>
-                    <li>Name your project: <strong>"BigButtonPlay-YourName"</strong></li>
+                    <li>Name your project: <strong>"BigButtonPlay-YourName"</strong> (or just click CREATE to use default)</li>
                     <li>Click "CREATE"</li>
-                    <li>Wait for the project to be created (about 30 seconds)</li>
+                    <li>Wait for the project to be created (usually takes 5-15 seconds), then come back here and click "Next Step"</li>
                 </ol>
             </div>
-            <a href="https://console.cloud.google.com/projectcreate" target="_blank" class="action-button">
+            <!-- <a href="https://console.cloud.google.com/projectcreate" target="_blank" class="action-button" >
+                🚀 Open Google Cloud Console
+            </a> -->
+            <a href="#" onclick="openGoogleConsole()" class="action-button">
                 🚀 Open Google Cloud Console
             </a>
+
             <button class="action-button next-button" onclick="nextStep()">
                 ✅ Project Created, Next Step
             </button>
@@ -279,18 +313,24 @@
             </div>
             <div class="step-instructions">
                 <ol>
-                    <li>Click the button below to open YouTube API page</li>
-                    <li>Make sure your project (BigButtonPlay-YourName) is selected at the top</li>
+                    <li class="action-instruction">Click the button below to open YouTube API page, then in the page that opens:</li>
+                    <li>Make sure your project (e.g., BigButtonPlay-YourName) is selected at the top</li>
                     <li>Click the big blue "ENABLE" button</li>
-                    <li>Wait for the API to be enabled</li>
+                    <li>Wait for the API to be enabled (i.e., the page will be fully loaded), then come back here and click "Next Step"</li>
                 </ol>
             </div>
-            <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" class="action-button">
+            <!-- <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" class="action-button">
+                📺 Enable YouTube API
+            </a> -->
+            
+            <a href="#" onclick="openYouTubeAPI()" class="action-button">
                 📺 Enable YouTube API
             </a>
+            
             <button class="action-button next-button" onclick="nextStep()">
                 ✅ API Enabled, Next Step
             </button>
+            
         </div>
 
         <!-- Step 4: Create API Key -->
@@ -301,31 +341,42 @@
             </div>
             <div class="step-instructions">
                 <ol>
-                    <li>Click the button below to open Credentials page</li>
-                    <li>Click "+ CREATE CREDENTIALS"</li>
-                    <li>Select "API key" from the dropdown</li>
+                    <li class="action-instruction">Click the button below to open Credentials page, then in the page that opens:</li>
+                    <li>Click "+ CREATE CREDENTIALS" and select "API key"</li>
                     <li>Copy the API key that appears</li>
-                    <li>Click "RESTRICT KEY" and select "YouTube Data API v3"</li>
-                    <li>Click "SAVE"</li>
-                    <li>Paste your API key in the box below</li>
+                    <li>Click on the API key name, then click "RESTRICT KEY" and select "YouTube Data API v3", finaly click "SAVE" andcome back here</li>
+                    <li>Paste your API key in the box below and test it</li>
                 </ol>
             </div>
-            <div class="warning-box" style="background: #e7f3ff; border: 1px solid #b3d9ff; color: #004085;">
+            <!-- <div class="warning-box" style="background: #e7f3ff; border: 1px solid #b3d9ff; color: #004085;">
                 <strong>💡 Pro Tip:</strong> Save this Credentials page link - it's YOUR personal API management area! You can return to your page anytime to:
                 <ul style="margin: 10px 0 0 20px;">
                     <li>View your current API keys</li>
                     <li>Delete old keys if needed</li>
                     <li>Create new keys for BigButtonPlay</li>
                 </ul>
-            </div>
-            <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="action-button">
+            </div> -->
+            <!-- <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="action-button">
                 🔑 Create API Key
-            </a>
+            </a> -->
+
+            <button onclick="openCredentials()" class="action-button">
+                🔑 Create API Key
+            </button>
+
             <div style="margin-top: 20px;">
-                <input type="text" class="api-key-input" id="apiKeyInput" placeholder="Paste your API Key here...">
+                <!-- <input type="text" class="api-key-input" id="apiKeyInput" placeholder="Paste your API Key here...">
                 <button class="action-button secondary" onclick="testApiKey()">
                     🧪 Test & Save API Key
-                </button>
+                </button> -->
+
+                <div class="api-key-section">
+                    <input type="text" class="api-key-input" id="apiKeyInput" placeholder="Paste your API Key here...">
+                    <button class="action-button secondary" onclick="testApiKey()">
+                        🧪 Test & Save API Key
+                    </button>
+                </div>
+
             </div>
         </div>
 
@@ -357,6 +408,25 @@
     <script>
         let currentStep = 1;
         const totalSteps = 4;
+
+
+        function openGoogleConsole() {
+            if (confirm("✅ Perfect! The Google page will open now.\n\n📱 After you complete the steps there, come back to this page to continue the setup clicking Next Step.\n\nReady to go?")) {
+                window.open('https://console.cloud.google.com/projectcreate', '_blank');
+            }
+        }
+        
+        function openYouTubeAPI() {
+            if (confirm("Perfect! The YouTube API page will open now.\n\nOn the Google page, click the blue ENABLE button, then come back to this page to continue the setup clicking Next Step.\n\nReady to go?")) {
+                window.open('https://console.cloud.google.com/apis/library/youtube.googleapis.com', '_blank');
+            }
+        }
+
+        function openCredentials() {
+            if (confirm("Perfect! The Credentials page will open now.\n\nCreate your API key, copy it, restrict it to YouTube Data API v3, then come back to this page and paste it below.\n\nReady to go?")) {
+                window.open('https://console.cloud.google.com/apis/credentials', '_blank');
+            }
+        }        
 
         function nextStep() {
             if (currentStep < totalSteps) {
